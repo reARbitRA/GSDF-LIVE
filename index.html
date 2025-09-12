@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSDF LIVE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --color-background: #02040a;
+        --color-surface: #0a0f1b;
+        --color-surface-light: #131a30;
+        
+        /* Spectrum-Based Evidence Coding */
+        --color-fact-verified: #00FF88;   /* Verified Green (Town) */
+        --color-fact-deception: #CC00CC;   /* Deception Magenta (Mafia) */
+        --color-fact-unknown: #8888FF;     /* Mystery Blue (Independent) */
+        --color-fact-conflict: #FFAA00;    /* Dynamic Amber (Third Party) */
+        --color-trust-high: #0066CC;       /* Deep Reliable Blue */
+        --color-trust-neutral: #666666;    /* Ambiguous Grey */
+        --color-trust-low: #CC3300;        /* Warning Red */
+        
+        /* Mapped variables for consistency */
+        --color-primary: var(--color-fact-verified);
+        --color-secondary: var(--color-trust-high);
+        --color-accent: var(--color-fact-deception);
+        --color-warning: var(--color-fact-conflict);
+        --color-danger: var(--color-trust-low);
+
+        --color-text-primary: #e0e0e0;
+        --color-text-secondary: #a0a0c0;
+        --color-border: rgba(0, 255, 136, 0.2);
+
+        --font-body: 'Inter', sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+        --font-display: 'Orbitron', sans-serif;
+      }
+
+      @keyframes pulse-glow {
+        0%, 100% { 
+          filter: drop-shadow(0 0 4px var(--glow-color));
+          opacity: 0.8; 
+        }
+        50% { 
+          filter: drop-shadow(0 0 10px var(--glow-color));
+          opacity: 1; 
+        }
+      }
+      
+      @keyframes glitch {
+        0% { transform: translate(0); }
+        20% { transform: translate(-2px, 2px); }
+        40% { transform: translate(-2px, -2px); }
+        60% { transform: translate(2px, 2px); }
+        80% { transform: translate(2px, -2px); }
+        100% { transform: translate(0); }
+      }
+      
+      @keyframes data-flow {
+        to {
+          stroke-dashoffset: -1000;
+        }
+      }
+
+      @keyframes radar-sweep {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+       
+      @keyframes fade-out {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+      
+      @keyframes letter-shimmer {
+        0%, 100% { 
+          text-shadow: 0 0 2px currentColor, 0 0 5px rgba(255, 255, 255, 0.3);
+          opacity: 0.9;
+        }
+        50% { 
+          text-shadow: 0 0 6px currentColor, 0 0 12px rgba(255, 255, 255, 0.5);
+          opacity: 1;
+        }
+      }
+      
+      @keyframes neural-weave-draw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      
+      .animate-neural-weave path {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: neural-weave-draw 2s ease-out forwards;
+      }
+
+      .animated-letter {
+        display: inline-block;
+        animation: letter-shimmer 3s ease-in-out infinite;
+      }
+
+      .animate-fade-in {
+        animation: fade-in 0.3s ease-out forwards;
+      }
+      
+      .animate-fade-out {
+        animation: fade-out 0.5s ease-in forwards;
+      }
+
+      .radar-sweep-arm {
+        transform-origin: 50% 50%;
+        animation: radar-sweep 3s linear infinite;
+      }
+      
+      .title-glow {
+        color: var(--color-primary);
+        text-shadow: 0 0 5px var(--color-primary), 0 0 10px var(--color-primary), 0 0 20px rgba(0, 255, 136, 0.5);
+        animation: pulse-glow 2s infinite ease-in-out;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background-color: var(--color-background);
+        color: var(--color-text-primary);
+        background-image: 
+          radial-gradient(circle at 25% 25%, rgba(0, 102, 204, 0.2) 0%, transparent 40%),
+          radial-gradient(circle at 75% 75%, rgba(0, 255, 136, 0.1) 0%, transparent 40%);
+        background-attachment: fixed;
+      }
+
+      /* Base styles for interactive elements */
+      .terminal-panel {
+        transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+      }
+      .terminal-panel:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.15);
+      }
+
+      .terminal-button {
+        transition: transform 0.2s ease-out, background-color 0.2s, color 0.2s;
+      }
+      .terminal-button:hover:not(:disabled) {
+        transform: scale(1.05);
+      }
+      
+      .terminal-tab {
+        transition: background-color 0.2s ease-out, color 0.2s ease-out, box-shadow 0.2s ease-out;
+      }
+
+      .font-orbitron {
+        font-family: var(--font-display);
+      }
+      .font-mono {
+        font-family: var(--font-mono);
+      }
+      .glitch-text:hover {
+        animation: glitch 0.2s linear infinite;
+        text-shadow: 0 0 5px var(--color-primary);
+      }
+      .gateway-bg, .script-riter-bg {
+        background-image:
+          linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
+        background-size: 2rem 2rem;
+        background-position: center center;
+      }
+
+      /* Accessibility: Reduced Motion */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.17.0",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "@testing-library/react": "https://aistudiocdn.com/@testing-library/react@^16.3.0",
+    "@testing-library/jest-dom": "https://aistudiocdn.com/@testing-library/jest-dom@^6.8.0",
+    "@jest/globals": "https://aistudiocdn.com/@jest/globals@^30.1.2"
+  }
+}
+</script>
+</head>
+  <body class="bg-gray-900 text-gray-100">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
