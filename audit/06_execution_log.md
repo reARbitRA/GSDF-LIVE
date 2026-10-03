@@ -42,3 +42,10 @@
 ### T-006 — Tournament registration (local) + demo-data label
 - Files: services/registrationStorage.ts (+), components/scenes/Lobby/TournamentBrowser.tsx (Register/withdraw wired, counts reflect registration, aria-pressed, demo-data label, banner), TournamentBrowser.test.tsx (+4).
 - Test-first (tests target behaviour absent at baseline). Verify cmd#37: 33/33, typecheck 0. F-EXEC-003 CLOSED (with the explicit caveat that listings remain demo data until a backend exists).
+
+### T-010 + T-011 + T-012 — honest badges; dead code & importmap cleanup; code-split
+- T-010: DigitalIdCard footer now reads "Demo auth — no server verification" / "Local-only session". `git grep 'E2EE Active|Device Trust Verified'` → 0.
+- T-011: removed components/{Dashboard,Header,AnimatedLogo,TournamentBrowser,ScenarioEditor}.tsx, components/icons/*, components/scenes/Nexus/ScenarioEditor.tsx (all orphans per cmd#11; exact duplicates/older iterations of live files). Scene stubs kept. Test libs removed from index.html importmap.
+- T-012: App.tsx lazy-loads ScriptRiterScene behind Suspense.
+- Verify cmd#38: build OK — main chunk 668.41 kB → 257.06 kB + 186.85 kB lazy chunk; 33/33 tests; typecheck 0; zero window.alert in src.
+- F-SEC-003, F-QUAL-001, F-QUAL-003, F-RELY-003 CLOSED. F-SEC-004 partially mitigated (importmap trimmed; Tailwind CDN remains — backlog).

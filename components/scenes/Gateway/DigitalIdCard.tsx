@@ -183,13 +183,13 @@ const DigitalIdCard: React.FC<DigitalIdCardProps> = ({ onAuthenticated }) => {
             </div>
         </form>
          <div className="p-3 bg-black/30 text-xs text-gray-500 font-mono flex justify-between items-center">
-            <div className="flex items-center gap-2" title="End-to-end Encrypted Connection">
-                <ShieldCheckIcon className="w-4 h-4 text-green-400" />
-                <span>E2EE Active</span>
+            <div className="flex items-center gap-2" title="Demo authentication: credentials are checked locally only; no server verification exists yet.">
+                <ShieldCheckIcon className="w-4 h-4 text-amber-400" />
+                <span>Demo auth — no server verification</span>
             </div>
-             <div className="flex items-center gap-2" title="This device is trusted">
+             <div className="flex items-center gap-2" title="Your session and saved work live only in this browser.">
                 <FingerPrintIcon className="w-4 h-4 text-blue-400" />
-                <span>Device Trust Verified</span>
+                <span>Local-only session</span>
             </div>
         </div>
     </div>
