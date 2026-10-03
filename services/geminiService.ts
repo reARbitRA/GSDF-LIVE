@@ -1,6 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Role, AIGenerationResponse, GeneratedRoleIdea } from '../types';
 import { MAX_IMPORT_BYTES } from './roleNormalizer';
+import { logger } from './logger';
 
 /** Thrown when an AI feature is used but no Gemini key was configured at build time. */
 export class AiUnavailableError extends Error {
@@ -100,7 +101,7 @@ export const generateScenarioIdeas = async (
 
     const jsonString = response.text;
     if (!jsonString) {
-        console.error("Gemini API returned an empty response.");
+        logger.warn("ai.generate.empty_response");
         return null;
     }
 
@@ -108,7 +109,7 @@ export const generateScenarioIdeas = async (
     return parsedJson as AIGenerationResponse;
 
   } catch (error) {
-    console.error("Error calling Gemini API:", error);
+    logger.error("ai.generate.failed", error);
     return null;
   }
 };
@@ -170,7 +171,7 @@ export const parseRolesFromFileContent = async (fileContent: string): Promise<Ge
     try {
       parsedJson = JSON.parse(jsonString);
     } catch (e) {
-      console.error("Malformed JSON from Gemini:", jsonString);
+      logger.warn("ai.parse.malformed_json", { length: jsonString.length });
       throw new Error("The AI returned a response that could not be parsed. Please try again.");
     }
 
@@ -180,7 +181,7 @@ export const parseRolesFromFileContent = async (fileContent: string): Promise<Ge
 
     return parsedJson.roles as GeneratedRoleIdea[];
   } catch (error) {
-    console.error("Error calling Gemini API for file parsing:", error);
+    logger.error("ai.parse.failed", error);
     if (error instanceof AiUnavailableError) throw error;
     if (error instanceof Error && error.message.startsWith("The AI")) {
         // Re-throw our custom user-facing errors

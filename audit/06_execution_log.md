@@ -33,3 +33,8 @@
 - Files: components/shared-ui/core/ErrorBoundary.tsx (+), ErrorBoundary.test.tsx (+3), services/logger.ts (+), components/shared-ui/banners/NotificationBanner.tsx (rewritten: role=alert/status, dismiss, auto-dismiss), index.tsx (wrap App).
 - Discovered during typecheck: @types/react / @types/react-dom were absent, so every React type resolved to implicit `any` (cmd#33 error surfaced it). Installed both; typecheck still 0 errors with real types (cmd#34). Logged as part of F-EXEC-006 closure.
 - Verify cmd#35: 22/22 tests, typecheck 0. F-RELY-001 CLOSED.
+
+### T-005 + T-009 — Save/Load/Export scenarios; replace alert()/console.error with banner + logger
+- Files: services/scenarioStorage.ts (+), services/scenarioStorage.test.ts (+4), components/scenes/ScriptRiter/ScriptRiterScene.tsx (restore last-opened on mount, handleSave/handleNew/handleExport, NotificationBanner for import/AI errors, aria-labels, data-testid on nodes), ScriptRiterScene.test.tsx (+3), components/scenes/Gateway/Dashboard.tsx (alert → banner), services/geminiService.ts (console.* → logger).
+- Test-first: new scene tests written before wiring (Save button had no handler). Verify cmd#36: 29/29, typecheck 0; `git grep alert(` only matches orphan legacy files (removed in T-011).
+- F-EXEC-002, F-DATA-002, F-OBS-001 CLOSED.
