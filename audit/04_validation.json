@@ -1,0 +1,28 @@
+{
+ "validator_model": "NONE_AVAILABLE",
+ "status": "VALIDATION: DEGRADED \u2014 SINGLE-MODEL",
+ "reason": "No sub-agent/other-model invocation interface exists in this sandbox; per Prime Directive 'never fabricate validator output' the self-reconciliation fallback was executed.",
+ "self_reconciliation": {
+  "method": "Re-read 01_findings.json/02_scorecard.json from disk; re-derived every evidence token in the seeded spot-check from the live tree; re-ran mc_sim.py (assertion PASS).",
+  "spot_check": "10/10 [E:cmd#24]",
+  "mc_assertion": "PASS [E:cmd#23]",
+  "MAD": null,
+  "MAX_DEV": null,
+  "delta_R": null,
+  "P0_jaccard": null,
+  "HALLUC": 0,
+  "hostile_review_self": [
+   "Checked for hallucinated entities: every path/line in findings opened in session (cmd#2,#3,#12,#13,#14,#24).",
+   "Severity sanity: F-EXEC-001 P0 is justified by protocol definition 'won't start' \u2014 verified by bundle grep and import() rejection.",
+   "Possible deflation: J1 classified PARTIAL rather than BROKEN because README-documented config (key set) boots the app; logged as assumption A-002."
+  ]
+ },
+ "freeze": {
+  "sha256_mvp_definition": "6a8b983f19bde5cba3049471772f8b9e817388f6bd05af4ae44616ff888a6cfc",
+  "sha256_findings": "e8a812c557e3d4b81bae2b8a2fbe1df880350c05d8a728f6e6ba97b26998d842",
+  "sha256_relevant_file_set": "bda734be9c8ac86e9bd0bf9bacb198c60946b8aff827bccbdd4804fa573b51f0",
+  "frozen_at_head": "ea81d4dac65a2ff23c7a736fd0f8b017a44a4535"
+ },
+ "freeze_exceptions": [],
+ "milestone_certificates": []
+}

@@ -1,0 +1,16 @@
+{
+ "label": "baseline",
+ "head_sha": "ea81d4dac65a2ff23c7a736fd0f8b017a44a4535",
+ "journeys": {"J1": "PARTIAL", "J2": "VERIFIED_WORKING", "J3": "PARTIAL", "J4": "PARTIAL", "J5": "UNTESTABLE(no Gemini key; network call; liveness testing forbidden)"},
+ "journey_notes": {
+  "J1": "Boots only when GEMINI_API_KEY is set (P0 F-EXEC-001); then accepts any credentials (F-SEC-002). [E:cmd#21]",
+  "J2": "Header navigation renders all three pages. [E:cmd#21]",
+  "J3": "Canvas works; Save is a no-op. [E:cmd#21]",
+  "J4": "Filter works; Register is a no-op on mock data. [E:cmd#21]",
+  "J5": "Code path read; not executed."
+ },
+ "core_cmd_failed_dims": ["D2", "D5"],
+ "coverage_tool_available": false, "coverage": 0.0, "pass_rate": 0.0,
+ "positive_verification_grade": {"D1":"A","D2":"A","D3":"B","D4":"B","D5":"A","D6":"A","D7":"B","D8":"A","D9":"B","D10":"A","D11":"B","D12":"A"},
+ "scorecard_out": "02_scorecard.json"
+}

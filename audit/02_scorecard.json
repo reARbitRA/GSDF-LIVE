@@ -1,0 +1,239 @@
+{
+ "head_sha": "ea81d4dac65a2ff23c7a736fd0f8b017a44a4535",
+ "label": "baseline",
+ "dimensions": {
+  "D1": {
+   "weight": 18,
+   "findings": [
+    "F-EXEC-001",
+    "F-EXEC-002",
+    "F-EXEC-003"
+   ],
+   "penalty_total": 81.0,
+   "raw": 19.0,
+   "score": 19.0,
+   "dominant_grade": "A",
+   "caps_applied": [
+    "cap3_journeys=20.00"
+   ],
+   "half_width": 3,
+   "min": 16.0,
+   "mode": 19.0,
+   "max": 22.0
+  },
+  "D2": {
+   "weight": 14,
+   "findings": [
+    "F-EXEC-004",
+    "F-EXEC-005"
+   ],
+   "penalty_total": 24.0,
+   "raw": 76.0,
+   "score": 0.0,
+   "dominant_grade": "A",
+   "caps_applied": [
+    "cap2_exec_fail",
+    "cap4_tests=0.00"
+   ],
+   "half_width": 3,
+   "min": 0,
+   "mode": 0.0,
+   "max": 3.0
+  },
+  "D3": {
+   "weight": 14,
+   "findings": [
+    "F-SEC-001",
+    "F-SEC-002",
+    "F-SEC-003",
+    "F-SEC-004",
+    "F-SEC-005"
+   ],
+   "penalty_total": 49.32,
+   "raw": 50.68,
+   "score": 50.68,
+   "dominant_grade": "B",
+   "caps_applied": [],
+   "half_width": 7,
+   "min": 43.68,
+   "mode": 50.68,
+   "max": 57.68
+  },
+  "D4": {
+   "weight": 8,
+   "findings": [
+    "F-DATA-001",
+    "F-DATA-002"
+   ],
+   "penalty_total": 10.8,
+   "raw": 89.2,
+   "score": 89.2,
+   "dominant_grade": "B",
+   "caps_applied": [],
+   "half_width": 7,
+   "min": 82.2,
+   "mode": 89.2,
+   "max": 96.2
+  },
+  "D5": {
+   "weight": 8,
+   "findings": [
+    "F-EXEC-006"
+   ],
+   "penalty_total": 18.0,
+   "raw": 82.0,
+   "score": 30,
+   "dominant_grade": "A",
+   "caps_applied": [
+    "cap2_exec_fail"
+   ],
+   "half_width": 3,
+   "min": 27,
+   "mode": 30,
+   "max": 33
+  },
+  "D6": {
+   "weight": 8,
+   "findings": [
+    "F-OPS-001",
+    "F-OPS-002"
+   ],
+   "penalty_total": 19.5,
+   "raw": 80.5,
+   "score": 80.5,
+   "dominant_grade": "A",
+   "caps_applied": [],
+   "half_width": 3,
+   "min": 77.5,
+   "mode": 80.5,
+   "max": 83.5
+  },
+  "D7": {
+   "weight": 7,
+   "findings": [
+    "F-RELY-001",
+    "F-RELY-002",
+    "F-OBS-001"
+   ],
+   "penalty_total": 16.2,
+   "raw": 83.8,
+   "score": 83.8,
+   "dominant_grade": "B",
+   "caps_applied": [],
+   "half_width": 7,
+   "min": 76.8,
+   "mode": 83.8,
+   "max": 90.8
+  },
+  "D8": {
+   "weight": 6,
+   "findings": [
+    "F-RELY-003"
+   ],
+   "penalty_total": 6.0,
+   "raw": 94.0,
+   "score": 94.0,
+   "dominant_grade": "A",
+   "caps_applied": [],
+   "half_width": 3,
+   "min": 91.0,
+   "mode": 94.0,
+   "max": 97.0
+  },
+  "D9": {
+   "weight": 6,
+   "findings": [
+    "F-API-001"
+   ],
+   "penalty_total": 5.4,
+   "raw": 94.6,
+   "score": 94.6,
+   "dominant_grade": "B",
+   "caps_applied": [],
+   "half_width": 7,
+   "min": 87.6,
+   "mode": 94.6,
+   "max": 100
+  },
+  "D10": {
+   "weight": 5,
+   "findings": [
+    "F-QUAL-001",
+    "F-QUAL-002",
+    "F-QUAL-003"
+   ],
+   "penalty_total": 13.35,
+   "raw": 86.65,
+   "score": 86.65,
+   "dominant_grade": "A",
+   "caps_applied": [],
+   "half_width": 3,
+   "min": 83.65,
+   "mode": 86.65,
+   "max": 89.65
+  },
+  "D11": {
+   "weight": 3,
+   "findings": [
+    "F-SCOPE-001",
+    "F-QUAL-004"
+   ],
+   "penalty_total": 23.4,
+   "raw": 76.6,
+   "score": 76.6,
+   "dominant_grade": "A",
+   "caps_applied": [],
+   "half_width": 3,
+   "min": 73.6,
+   "mode": 76.6,
+   "max": 79.6
+  },
+  "D12": {
+   "weight": 3,
+   "findings": [
+    "F-LEGAL-001"
+   ],
+   "penalty_total": 6.0,
+   "raw": 94.0,
+   "score": 94.0,
+   "dominant_grade": "A",
+   "caps_applied": [],
+   "half_width": 3,
+   "min": 91.0,
+   "mode": 94.0,
+   "max": 97.0
+  }
+ },
+ "R_point": 53.124,
+ "letter": "D",
+ "mc": {
+  "N": 10000,
+  "seed": 424242,
+  "eps_sigma": 3.0,
+  "mean": 53.187,
+  "ci95": [
+   47.119,
+   59.218
+  ],
+  "SUL_raw": 0.0
+ },
+ "SUL": 0.0,
+ "hard_gates_tripped": [
+  "P0_count>=1 -> SUL<=0.05",
+  "P1_count>=5 -> SUL<=0.35"
+ ],
+ "severity_counts": {
+  "P0": 1,
+  "P1": 8,
+  "P2": 15,
+  "P3": 2
+ },
+ "journeys": {
+  "J1": "PARTIAL",
+  "J2": "VERIFIED_WORKING",
+  "J3": "PARTIAL",
+  "J4": "PARTIAL",
+  "J5": "UNTESTABLE(no Gemini key; network call; liveness testing forbidden)"
+ },
+ "determinism_note": "Arithmetic determinism only: identical findings -> identical scores. Discovery/classification involve model judgement."
+}

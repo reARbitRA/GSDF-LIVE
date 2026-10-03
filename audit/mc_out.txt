@@ -1,0 +1,16 @@
+== ARBITER scoring :: baseline :: HEAD ea81d4d ==
+ D1 w=18 pen= 81.000 raw= 19.000 score= 19.000 dom=A hw= 3 caps=['cap3_journeys=20.00'] findings=['F-EXEC-001', 'F-EXEC-002', 'F-EXEC-003']
+ D2 w=14 pen= 24.000 raw= 76.000 score=  0.000 dom=A hw= 3 caps=['cap2_exec_fail', 'cap4_tests=0.00'] findings=['F-EXEC-004', 'F-EXEC-005']
+ D3 w=14 pen= 49.320 raw= 50.680 score= 50.680 dom=B hw= 7 caps=[] findings=['F-SEC-001', 'F-SEC-002', 'F-SEC-003', 'F-SEC-004', 'F-SEC-005']
+ D4 w= 8 pen= 10.800 raw= 89.200 score= 89.200 dom=B hw= 7 caps=[] findings=['F-DATA-001', 'F-DATA-002']
+ D5 w= 8 pen= 18.000 raw= 82.000 score= 30.000 dom=A hw= 3 caps=['cap2_exec_fail'] findings=['F-EXEC-006']
+ D6 w= 8 pen= 19.500 raw= 80.500 score= 80.500 dom=A hw= 3 caps=[] findings=['F-OPS-001', 'F-OPS-002']
+ D7 w= 7 pen= 16.200 raw= 83.800 score= 83.800 dom=B hw= 7 caps=[] findings=['F-RELY-001', 'F-RELY-002', 'F-OBS-001']
+ D8 w= 6 pen=  6.000 raw= 94.000 score= 94.000 dom=A hw= 3 caps=[] findings=['F-RELY-003']
+ D9 w= 6 pen=  5.400 raw= 94.600 score= 94.600 dom=B hw= 7 caps=[] findings=['F-API-001']
+D10 w= 5 pen= 13.350 raw= 86.650 score= 86.650 dom=A hw= 3 caps=[] findings=['F-QUAL-001', 'F-QUAL-002', 'F-QUAL-003']
+D11 w= 3 pen= 23.400 raw= 76.600 score= 76.600 dom=A hw= 3 caps=[] findings=['F-SCOPE-001', 'F-QUAL-004']
+D12 w= 3 pen=  6.000 raw= 94.000 score= 94.000 dom=A hw= 3 caps=[] findings=['F-LEGAL-001']
+R_point=53.124 (D)  R_check=53.124  assertion=PASS
+MC: N=10000 seed=424242 mean=53.187 CI95=[47.119,59.218] SUL_raw=0.0000
+severity={'P0': 1, 'P1': 8, 'P2': 15, 'P3': 2} gates=['P0_count>=1 -> SUL<=0.05', 'P1_count>=5 -> SUL<=0.35'] SUL=0.0000

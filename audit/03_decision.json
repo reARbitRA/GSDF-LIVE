@@ -1,0 +1,47 @@
+{
+ "head_sha": "ea81d4dac65a2ff23c7a736fd0f8b017a44a4535",
+ "verdict": "NO-GO \u2014 BLOCKED",
+ "matched_rule": "1 (P0_count>=1)",
+ "SUL": 0.0,
+ "R_point": 53.124,
+ "letter": "D",
+ "ci95": [
+  47.119,
+  59.218
+ ],
+ "audit_confidence": 100,
+ "coverage_ratio": 1.0,
+ "grade_AB_share": 1.0,
+ "spot_check_pass_rate": 1.0,
+ "severity": {
+  "P0": 1,
+  "P1": 8,
+  "P2": 15,
+  "P3": 2
+ },
+ "journeys": {
+  "VERIFIED_WORKING": 1,
+  "PARTIAL": 3,
+  "BROKEN": 0,
+  "UNTESTABLE": 1
+ },
+ "unmet_conditions": [
+  "P0_count==0 (is 1)",
+  "P1_count<=2 (is 8)",
+  "all journeys VERIFIED_WORKING (1/5)",
+  "SUL>=0.85 (is 0.0)"
+ ],
+ "hard_gates": [
+  "P0_count>=1 -> SUL<=0.05",
+  "P1_count>=5 -> SUL<=0.35"
+ ],
+ "distance_to_go_points": 21.876,
+ "blocking_effort_hours": 4.0,
+ "top5_blockers": [
+  "F-EXEC-001 P0 app throws at module load without GEMINI_API_KEY",
+  "F-EXEC-002 P1 Save button is a no-op (J3)",
+  "F-EXEC-003 P1 Register is a no-op on mock data (J4)",
+  "F-SEC-001 P1 Gemini key compiled into client bundle",
+  "F-SEC-002 P1 auth accepts any credentials"
+ ]
+}
