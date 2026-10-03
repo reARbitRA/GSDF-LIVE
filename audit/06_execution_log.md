@@ -59,3 +59,4 @@
 ## Milestone close (M0+M1+M2) and Phase 8
 - Post-remediation probe 5/5 [cmd#43]; after-score R=88.947 (A-), SUL=1.00, verdict CONDITIONAL GO [cmd#45]; spot-check 9/10 + 1 exit-code-only [cmd#47].
 - Remaining: T-015, T-016, T-017 (human), T-018 (backlog). Termination: MAX AUTONOMOUS PROGRESS (GO blocked on J5 key + human decisions).
+- cmd#49: push rejected — GitHub App lacks `workflows` permission for .github/workflows/ci.yml. Moved workflow to ci/github-workflow-ci.yml with activation instructions (no history rewrite). T-013 → DONE_PARTIAL.

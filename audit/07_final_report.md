@@ -103,6 +103,7 @@ Overall: **D (53.1) → A- (88.9)**.
 - Dependencies: runtime deps reduced to 3 (`@google/genai`, `react`, `react-dom`); dev: vitest 5.0.3, jsdom, coverage-v8, @testing-library/*, @types/react(-dom). `npm audit`: 0 vulnerabilities [E:cmd#42].
 
 ## 6. Could-not-do ceiling table
+| T-013 (CI activation) | GitHub rejected push of `.github/workflows/ci.yml`: App token lacks `workflows` permission [E:cmd#49] | `git mv ci/github-workflow-ci.yml .github/workflows/ci.yml` and commit (ci/README.md) | 0.1 h | N |
 | task_id | reason | required_human_action | estimated_effort | blocks_launch |
 |---|---|---|---|---|
 | T-015 | Backend/hosting decision + server-side secret provisioning | Requires hosting decision. | 6.0 h | Y |
@@ -121,7 +122,7 @@ Overall: **D (53.1) → A- (88.9)**.
 
 ## 8. Distance to GO
 Score distance: **0 pts** (R_point 88.947 ≥ 75). Remaining GO blockers are non-score conditions: J5 verification with a key, and 2 open P1s (14 h of human-gated work: T-015 ≈ 6 h, T-016 ≈ 8 h).
-Top next actions: (1) run J5 manually with a referrer-restricted key; (2) decide hosting and move Gemini behind a serverless proxy (T-015); (3) pick an IdP and replace authService stub (T-016); (4) choose LICENSE (T-017); (5) move Tailwind to a build dependency + CSP (F-SEC-004); (6) split ScriptRiterScene (T-018); (7) raise coverage toward 70 % (lifts D2 cap); (8) add a backend for tournaments/scenarios; (9) run the Docker build in an environment with a daemon (A-004); (10) enable branch protection requiring the CI workflow.
+Top next actions: (1) run J5 manually with a referrer-restricted key; (2) decide hosting and move Gemini behind a serverless proxy (T-015); (3) pick an IdP and replace authService stub (T-016); (4) choose LICENSE (T-017); (5) move Tailwind to a build dependency + CSP (F-SEC-004); (6) split ScriptRiterScene (T-018); (7) raise coverage toward 70 % (lifts D2 cap); (8) add a backend for tournaments/scenarios; (9) run the Docker build in an environment with a daemon (A-004); (10) activate the staged CI workflow (`ci/README.md`) and enable branch protection requiring it.
 
 ## 9. Operational launch runbook
 1. `npm ci --ignore-scripts && npm run typecheck && npm test && npm run build` (CI does the same).

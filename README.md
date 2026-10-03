@@ -83,5 +83,5 @@ services/logger.ts         structured JSON log events (swap the sink for Sentry/
 
 ## Contributing
 
-CI (`.github/workflows/ci.yml`) runs typecheck, tests with coverage, a key-less production build and
+CI (`ci/github-workflow-ci.yml` — move to `.github/workflows/ci.yml` to activate, see `ci/README.md`) runs typecheck, tests with coverage, a key-less production build and
 `npm audit --audit-level=high` on every push and pull request. Keep it green.

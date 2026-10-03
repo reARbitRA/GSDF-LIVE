@@ -511,7 +511,8 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M2",
-   "status": "DONE"
+   "status": "DONE_PARTIAL",
+   "note": "Workflow authored and locally simulated (cmd#40-42) but staged at ci/github-workflow-ci.yml: GitHub rejected the push of .github/workflows/* (App token lacks `workflows` permission, cmd#49). Human: move the file (ci/README.md)."
   },
   {
    "task_id": "T-014",
