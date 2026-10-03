@@ -49,3 +49,9 @@
 - T-012: App.tsx lazy-loads ScriptRiterScene behind Suspense.
 - Verify cmd#38: build OK — main chunk 668.41 kB → 257.06 kB + 186.85 kB lazy chunk; 33/33 tests; typecheck 0; zero window.alert in src.
 - F-SEC-003, F-QUAL-001, F-QUAL-003, F-RELY-003 CLOSED. F-SEC-004 partially mitigated (importmap trimmed; Tailwind CDN remains — backlog).
+
+### T-013 + T-014 — CI, Dockerfile, .env.example, favicon; README rewrite
+- Files: .github/workflows/ci.yml (npm ci --ignore-scripts → typecheck → vitest --coverage → key-less build → npm audit --audit-level=high), Dockerfile (node:22-alpine build stage runs typecheck+test+build; nginxinc/nginx-unprivileged:1.27-alpine runtime, uid 101, port 8080, /healthz), docker/nginx.conf, .dockerignore, .env.example, public/favicon.svg (+ index.html link), README.md (rewritten: quickstart, scripts, env table, journeys J1–J5 + status, architecture, security notes, limitations).
+- cmd#39: all files present; build OK; dist/favicon.svg emitted; README greps pass. YAML parser not available in sandbox → workflow syntax UNVERIFIED by parser (hand-checked). Docker daemon not available → image build UNVERIFIED.
+- cmd#40–#42: simulated CI steps locally: npm ci OK, typecheck 0, 33/33 tests, coverage 55.71 % lines (v8). Found 3 moderate dev-only advisories introduced by vitest 3.x (GHSA path traversal in @vitest/mocker dev server); upgraded to vitest 5.0.3 / coverage-v8 5.0.3 → npm audit total 0; all tests still pass.
+- F-OPS-001, F-OPS-002, F-QUAL-004 CLOSED; F-SCOPE-001 CLOSED (scope now documented in README).
