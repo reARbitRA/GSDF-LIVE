@@ -32,5 +32,16 @@
    "new_sha256_findings": "ed5258e980be18482dda1a742717a266619cdf7ca021485b23d971198438238c"
   }
  ],
- "milestone_certificates": []
+ "milestone_certificates": [
+  {
+   "milestones": "M0+M1+M2 closed together at HEAD 5410891",
+   "status": "VALIDATION: DEGRADED \u2014 SINGLE-MODEL",
+   "validator_model": "NONE_AVAILABLE",
+   "closure_verification": "Every CLOSED finding carries closure_evidence from an executed command (see 01_findings.json); post-remediation journey probe 5/5 [E:cmd#43]; product suite 33/33 [E:cmd#42]; typecheck 0 [E:cmd#42]; npm audit 0 [E:cmd#42]; build 2 chunks [E:cmd#38].",
+   "spot_check": "9/10 verbatim + 1 exit-code-only match (environment-dependent count) [E:cmd#47]",
+   "mc_assertion": "PASS [E:cmd#45]",
+   "delta_R_vs_baseline": 35.823,
+   "freeze_state": "findings sha256 after status updates: 1c8c813da32049b0aa7f16bb1198682419ea75bb9f08f792d47c689d3a74e756"
+  }
+ ]
 }

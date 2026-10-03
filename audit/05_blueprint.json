@@ -43,7 +43,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M0",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-002",
@@ -78,7 +78,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M0",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-019",
@@ -112,7 +112,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M0",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-003",
@@ -148,7 +148,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M1",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-004",
@@ -183,7 +183,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M1",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-005",
@@ -220,7 +220,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M1",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-006",
@@ -255,7 +255,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M1",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-007",
@@ -294,7 +294,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M1",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-008",
@@ -327,7 +327,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M2",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-009",
@@ -363,7 +363,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M2",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-010",
@@ -397,7 +397,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M2",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-011",
@@ -439,7 +439,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M2",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-012",
@@ -472,7 +472,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M2",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-013",
@@ -511,7 +511,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M2",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-014",
@@ -545,7 +545,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M2",
-   "status": "PENDING"
+   "status": "DONE"
   },
   {
    "task_id": "T-015",
@@ -579,7 +579,7 @@
    "requires_human": true,
    "human_reason": "Backend/hosting decision + server-side secret provisioning",
    "milestone": "M3",
-   "status": "PENDING"
+   "status": "BLOCKED_HUMAN"
   },
   {
    "task_id": "T-016",
@@ -612,7 +612,7 @@
    "requires_human": true,
    "human_reason": "IdP selection is a product/business decision",
    "milestone": "M3",
-   "status": "PENDING"
+   "status": "BLOCKED_HUMAN"
   },
   {
    "task_id": "T-017",
@@ -643,7 +643,7 @@
    "requires_human": true,
    "human_reason": "Legal decision",
    "milestone": "M3",
-   "status": "PENDING"
+   "status": "BLOCKED_HUMAN"
   },
   {
    "task_id": "T-018",
@@ -677,7 +677,7 @@
    "requires_human": false,
    "human_reason": null,
    "milestone": "M4",
-   "status": "PENDING"
+   "status": "BACKLOG"
   }
  ]
 }

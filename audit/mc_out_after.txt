@@ -1,0 +1,16 @@
+== ARBITER scoring :: after :: HEAD ea81d4d ==
+ D1 w=18 pen=  0.000 raw=100.000 score= 80.000 dom=A hw= 2 caps=['cap3_journeys=80.00'] findings=[]
+ D2 w=14 pen=  0.000 raw=100.000 score= 89.793 dom=A hw= 2 caps=['cap4_tests=89.79'] findings=[]
+ D3 w=14 pen= 39.600 raw= 60.400 score= 60.400 dom=B hw= 7 caps=[] findings=['F-SEC-001', 'F-SEC-002', 'F-SEC-004']
+ D4 w= 8 pen=  0.000 raw=100.000 score=100.000 dom=B hw= 5 caps=[] findings=[]
+ D5 w= 8 pen=  0.000 raw=100.000 score=100.000 dom=A hw= 2 caps=[] findings=[]
+ D6 w= 8 pen=  0.000 raw=100.000 score=100.000 dom=A hw= 2 caps=[] findings=[]
+ D7 w= 7 pen=  0.000 raw=100.000 score=100.000 dom=B hw= 5 caps=[] findings=[]
+ D8 w= 6 pen=  0.000 raw=100.000 score=100.000 dom=A hw= 2 caps=[] findings=[]
+ D9 w= 6 pen=  0.000 raw=100.000 score=100.000 dom=B hw= 5 caps=[] findings=[]
+D10 w= 5 pen=  6.000 raw= 94.000 score= 94.000 dom=A hw= 3 caps=[] findings=['F-QUAL-002']
+D11 w= 3 pen=  0.000 raw=100.000 score=100.000 dom=B hw= 5 caps=[] findings=[]
+D12 w= 3 pen=  6.000 raw= 94.000 score= 94.000 dom=A hw= 3 caps=[] findings=['F-LEGAL-001']
+R_point=88.947 (A-)  R_check=88.947  assertion=PASS
+MC: N=10000 seed=424242 mean=88.353 CI95=[82.347,94.379] SUL_raw=1.0000
+severity={'P0': 0, 'P1': 2, 'P2': 3, 'P3': 0} gates=[] SUL=1.0000

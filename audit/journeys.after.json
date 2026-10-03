@@ -1,0 +1,37 @@
+{
+ "label": "after",
+ "head_sha": "ea81d4dac65a2ff23c7a736fd0f8b017a44a4535",
+ "journeys": {
+  "J1": "VERIFIED_WORKING",
+  "J2": "VERIFIED_WORKING",
+  "J3": "VERIFIED_WORKING",
+  "J4": "VERIFIED_WORKING",
+  "J5": "UNTESTABLE(no Gemini key; network call; liveness testing forbidden)"
+ },
+ "journey_notes": {
+  "J1": "Boots without key; real-click login with non-email id works; weak password rejected. Demo auth only (F-SEC-002 open). [E:cmd#43]",
+  "J2": "Dashboard + lazy Script Riter render. [E:cmd#43]",
+  "J3": "Add role \u2192 Save \u2192 localStorage; restore on remount. [E:cmd#36][E:cmd#43]",
+  "J4": "Register persists and updates count. [E:cmd#37][E:cmd#43]",
+  "J5": "Code path tested with mocked SDK/unavailable key only."
+ },
+ "core_cmd_failed_dims": [],
+ "coverage_tool_available": true,
+ "coverage": 55.71,
+ "pass_rate": 1.0,
+ "positive_verification_grade": {
+  "D1": "A",
+  "D2": "A",
+  "D3": "B",
+  "D4": "B",
+  "D5": "A",
+  "D6": "A",
+  "D7": "B",
+  "D8": "A",
+  "D9": "B",
+  "D10": "A",
+  "D11": "B",
+  "D12": "A"
+ },
+ "scorecard_out": "02_scorecard_after.json"
+}

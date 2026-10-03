@@ -1,0 +1,203 @@
+{
+ "head_sha": "ea81d4dac65a2ff23c7a736fd0f8b017a44a4535",
+ "label": "after",
+ "dimensions": {
+  "D1": {
+   "weight": 18,
+   "findings": [],
+   "penalty_total": 0.0,
+   "raw": 100,
+   "score": 80.0,
+   "dominant_grade": "A",
+   "caps_applied": [
+    "cap3_journeys=80.00"
+   ],
+   "half_width": 2,
+   "min": 78.0,
+   "mode": 80.0,
+   "max": 82.0
+  },
+  "D2": {
+   "weight": 14,
+   "findings": [],
+   "penalty_total": 0.0,
+   "raw": 100,
+   "score": 89.793,
+   "dominant_grade": "A",
+   "caps_applied": [
+    "cap4_tests=89.79"
+   ],
+   "half_width": 2,
+   "min": 87.79285714285714,
+   "mode": 89.79285714285714,
+   "max": 91.79285714285714
+  },
+  "D3": {
+   "weight": 14,
+   "findings": [
+    "F-SEC-001",
+    "F-SEC-002",
+    "F-SEC-004"
+   ],
+   "penalty_total": 39.6,
+   "raw": 60.4,
+   "score": 60.4,
+   "dominant_grade": "B",
+   "caps_applied": [],
+   "half_width": 7,
+   "min": 53.4,
+   "mode": 60.4,
+   "max": 67.4
+  },
+  "D4": {
+   "weight": 8,
+   "findings": [],
+   "penalty_total": 0.0,
+   "raw": 100,
+   "score": 100,
+   "dominant_grade": "B",
+   "caps_applied": [],
+   "half_width": 5,
+   "min": 95,
+   "mode": 100,
+   "max": 100
+  },
+  "D5": {
+   "weight": 8,
+   "findings": [],
+   "penalty_total": 0.0,
+   "raw": 100,
+   "score": 100,
+   "dominant_grade": "A",
+   "caps_applied": [],
+   "half_width": 2,
+   "min": 98,
+   "mode": 100,
+   "max": 100
+  },
+  "D6": {
+   "weight": 8,
+   "findings": [],
+   "penalty_total": 0.0,
+   "raw": 100,
+   "score": 100,
+   "dominant_grade": "A",
+   "caps_applied": [],
+   "half_width": 2,
+   "min": 98,
+   "mode": 100,
+   "max": 100
+  },
+  "D7": {
+   "weight": 7,
+   "findings": [],
+   "penalty_total": 0.0,
+   "raw": 100,
+   "score": 100,
+   "dominant_grade": "B",
+   "caps_applied": [],
+   "half_width": 5,
+   "min": 95,
+   "mode": 100,
+   "max": 100
+  },
+  "D8": {
+   "weight": 6,
+   "findings": [],
+   "penalty_total": 0.0,
+   "raw": 100,
+   "score": 100,
+   "dominant_grade": "A",
+   "caps_applied": [],
+   "half_width": 2,
+   "min": 98,
+   "mode": 100,
+   "max": 100
+  },
+  "D9": {
+   "weight": 6,
+   "findings": [],
+   "penalty_total": 0.0,
+   "raw": 100,
+   "score": 100,
+   "dominant_grade": "B",
+   "caps_applied": [],
+   "half_width": 5,
+   "min": 95,
+   "mode": 100,
+   "max": 100
+  },
+  "D10": {
+   "weight": 5,
+   "findings": [
+    "F-QUAL-002"
+   ],
+   "penalty_total": 6.0,
+   "raw": 94.0,
+   "score": 94.0,
+   "dominant_grade": "A",
+   "caps_applied": [],
+   "half_width": 3,
+   "min": 91.0,
+   "mode": 94.0,
+   "max": 97.0
+  },
+  "D11": {
+   "weight": 3,
+   "findings": [],
+   "penalty_total": 0.0,
+   "raw": 100,
+   "score": 100,
+   "dominant_grade": "B",
+   "caps_applied": [],
+   "half_width": 5,
+   "min": 95,
+   "mode": 100,
+   "max": 100
+  },
+  "D12": {
+   "weight": 3,
+   "findings": [
+    "F-LEGAL-001"
+   ],
+   "penalty_total": 6.0,
+   "raw": 94.0,
+   "score": 94.0,
+   "dominant_grade": "A",
+   "caps_applied": [],
+   "half_width": 3,
+   "min": 91.0,
+   "mode": 94.0,
+   "max": 97.0
+  }
+ },
+ "R_point": 88.947,
+ "letter": "A-",
+ "mc": {
+  "N": 10000,
+  "seed": 424242,
+  "eps_sigma": 3.0,
+  "mean": 88.353,
+  "ci95": [
+   82.347,
+   94.379
+  ],
+  "SUL_raw": 1.0
+ },
+ "SUL": 1.0,
+ "hard_gates_tripped": [],
+ "severity_counts": {
+  "P0": 0,
+  "P1": 2,
+  "P2": 3,
+  "P3": 0
+ },
+ "journeys": {
+  "J1": "VERIFIED_WORKING",
+  "J2": "VERIFIED_WORKING",
+  "J3": "VERIFIED_WORKING",
+  "J4": "VERIFIED_WORKING",
+  "J5": "UNTESTABLE(no Gemini key; network call; liveness testing forbidden)"
+ },
+ "determinism_note": "Arithmetic determinism only: identical findings -> identical scores. Discovery/classification involve model judgement."
+}

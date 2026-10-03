@@ -52,5 +52,41 @@
   "passing": 0,
   "value": 0.0
  },
- "green_definition": "build exit 0 AND typecheck exit 0 AND (once added) npm test exit 0 AND journey probe 6/6"
+ "green_definition": "build exit 0 AND typecheck exit 0 AND (once added) npm test exit 0 AND journey probe 6/6",
+ "after": {
+  "head_sha": "5410891ba86fe8cbf24594f5a25f87643de986f6",
+  "checks": {
+   "install": {
+    "exit": 0,
+    "evidence": "[E:cmd#40]"
+   },
+   "build": {
+    "exit": 0,
+    "chunks": "257.06 kB + 186.85 kB",
+    "evidence": "[E:cmd#38]"
+   },
+   "typecheck": {
+    "exit": 0,
+    "evidence": "[E:cmd#42]"
+   },
+   "test": {
+    "cmd": "npm test",
+    "exit": 0,
+    "tests": "33/33",
+    "evidence": "[E:cmd#42]"
+   },
+   "coverage": {
+    "lines": 55.71,
+    "evidence": "[E:cmd#42]"
+   },
+   "audit": {
+    "vulns_total": 0,
+    "evidence": "[E:cmd#42]"
+   },
+   "journey_probe_after": {
+    "tests": "5/5",
+    "evidence": "[E:cmd#43]"
+   }
+  }
+ }
 }

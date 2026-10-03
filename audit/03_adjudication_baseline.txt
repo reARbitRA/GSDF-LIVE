@@ -15,8 +15,12 @@
   DISTANCE TO GO    : 21.876 pts | 4.0 hrs
   TOP 5 BLOCKERS    :
     - F-EXEC-001 P0 app throws at module load without GEMINI_API_KEY
+
     - F-EXEC-002 P1 Save button is a no-op (J3)
+
     - F-EXEC-003 P1 Register is a no-op on mock data (J4)
+
     - F-SEC-001 P1 Gemini key compiled into client bundle
+
     - F-SEC-002 P1 auth accepts any credentials
 ═══════════════════════════════════════════════════════════

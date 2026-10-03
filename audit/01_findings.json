@@ -22,7 +22,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-014",
+  "closure_evidence": "[E:cmd#39] README journeys/env/scripts greps pass"
  },
  {
   "id": "F-EXEC-001",
@@ -53,7 +55,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-002",
+  "closure_evidence": "[E:cmd#31][E:cmd#43] import without key resolves; J1 boots"
  },
  {
   "id": "F-EXEC-002",
@@ -79,7 +83,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-005",
+  "closure_evidence": "[E:cmd#36][E:cmd#43] Save persists to localStorage"
  },
  {
   "id": "F-EXEC-003",
@@ -106,7 +112,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-006",
+  "closure_evidence": "[E:cmd#37][E:cmd#43] Register changes state/persists"
  },
  {
   "id": "F-EXEC-004",
@@ -131,7 +139,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-001",
+  "closure_evidence": "[E:cmd#26][E:cmd#42] npm test runs 33 tests"
  },
  {
   "id": "F-EXEC-005",
@@ -156,7 +166,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-003",
+  "closure_evidence": "[E:cmd#29] all 6 Gateway cases pass"
  },
  {
   "id": "F-EXEC-006",
@@ -180,7 +192,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-001",
+  "closure_evidence": "[E:cmd#26][E:cmd#42] tsc exit 0 incl. real React types"
  },
  {
   "id": "F-SEC-001",
@@ -253,7 +267,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-010",
+  "closure_evidence": "[E:cmd#38] grep badges = 0"
  },
  {
   "id": "F-SEC-004",
@@ -278,7 +294,8 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "OPEN",
+  "note": "Partially mitigated (T-011 removed test libs from importmap). Tailwind CDN + aistudiocdn importmap remain; severity unchanged P2."
  },
  {
   "id": "F-SEC-005",
@@ -302,7 +319,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-007",
+  "closure_evidence": "[E:cmd#32][E:cmd#36] size cap + fenced prompt"
  },
  {
   "id": "F-DATA-001",
@@ -326,7 +345,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-007",
+  "closure_evidence": "[E:cmd#32] 500 unique ids"
  },
  {
   "id": "F-DATA-002",
@@ -352,7 +373,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-005",
+  "closure_evidence": "[E:cmd#36] scenarioStorage tests"
  },
  {
   "id": "F-OPS-001",
@@ -376,7 +399,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-013",
+  "closure_evidence": "[E:cmd#39][E:cmd#40]"
  },
  {
   "id": "F-OPS-002",
@@ -400,7 +425,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-013",
+  "closure_evidence": "[E:cmd#39] dist/favicon.svg"
  },
  {
   "id": "F-RELY-001",
@@ -424,7 +451,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-004",
+  "closure_evidence": "[E:cmd#35] ErrorBoundary tests"
  },
  {
   "id": "F-RELY-002",
@@ -448,7 +477,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-008",
+  "closure_evidence": "[E:cmd#31] abortSignal x2"
  },
  {
   "id": "F-OBS-001",
@@ -473,7 +504,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-009",
+  "closure_evidence": "[E:cmd#38] zero alert() in src"
  },
  {
   "id": "F-RELY-003",
@@ -497,7 +530,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-012",
+  "closure_evidence": "[E:cmd#38] 257 kB main + 187 kB lazy"
  },
  {
   "id": "F-API-001",
@@ -522,7 +557,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-007",
+  "closure_evidence": "[E:cmd#32] normaliseTeam tests"
  },
  {
   "id": "F-QUAL-001",
@@ -545,7 +582,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-011",
+  "closure_evidence": "[E:cmd#38] duplicates removed"
  },
  {
   "id": "F-QUAL-002",
@@ -568,7 +607,8 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "OPEN",
+  "note": "Still open; ScriptRiterScene grew with T-005 (see cmd#44). Backlog T-018."
  },
  {
   "id": "F-QUAL-003",
@@ -592,7 +632,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-011",
+  "closure_evidence": "[E:cmd#38] importmap trimmed; devDependencies"
  },
  {
   "id": "F-QUAL-004",
@@ -616,7 +658,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN"
+  "status": "CLOSED",
+  "closed_by": "T-014",
+  "closure_evidence": "[E:cmd#39]"
  },
  {
   "id": "F-LEGAL-001",
@@ -665,7 +709,9 @@
   "pre_existing": true,
   "requires_human": false,
   "human_reason": null,
-  "status": "OPEN",
-  "freeze_exception": "FREEZE_EXCEPTION-001: discovered during T-001 verification (cmd#26/#27) after Phase 5 freeze; secondary validation = deterministic jsdom reproduction."
+  "status": "CLOSED",
+  "freeze_exception": "FREEZE_EXCEPTION-001: discovered during T-001 verification (cmd#26/#27) after Phase 5 freeze; secondary validation = deterministic jsdom reproduction.",
+  "closed_by": "T-019",
+  "closure_evidence": "[E:cmd#29][E:cmd#43] real click with non-email id submits"
  }
 ]

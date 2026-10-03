@@ -55,3 +55,7 @@
 - cmd#39: all files present; build OK; dist/favicon.svg emitted; README greps pass. YAML parser not available in sandbox → workflow syntax UNVERIFIED by parser (hand-checked). Docker daemon not available → image build UNVERIFIED.
 - cmd#40–#42: simulated CI steps locally: npm ci OK, typecheck 0, 33/33 tests, coverage 55.71 % lines (v8). Found 3 moderate dev-only advisories introduced by vitest 3.x (GHSA path traversal in @vitest/mocker dev server); upgraded to vitest 5.0.3 / coverage-v8 5.0.3 → npm audit total 0; all tests still pass.
 - F-OPS-001, F-OPS-002, F-QUAL-004 CLOSED; F-SCOPE-001 CLOSED (scope now documented in README).
+
+## Milestone close (M0+M1+M2) and Phase 8
+- Post-remediation probe 5/5 [cmd#43]; after-score R=88.947 (A-), SUL=1.00, verdict CONDITIONAL GO [cmd#45]; spot-check 9/10 + 1 exit-code-only [cmd#47].
+- Remaining: T-015, T-016, T-017 (human), T-018 (backlog). Termination: MAX AUTONOMOUS PROGRESS (GO blocked on J5 key + human decisions).

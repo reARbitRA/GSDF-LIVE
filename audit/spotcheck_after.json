@@ -1,0 +1,56 @@
+{
+ "head": "5410891ba86fe8cbf24594f5a25f87643de986f6",
+ "total_tokens": 57,
+ "selected": [
+  [
+   0,
+   10,
+   "[E:cmd#36]"
+  ],
+  [
+   1,
+   16,
+   "[E:cmd#6]"
+  ],
+  [
+   2,
+   52,
+   "[E:cmd#10]"
+  ],
+  [
+   3,
+   32,
+   "[E:components/scenes/ScriptRiter/ScriptRiterScene.tsx:L40]"
+  ],
+  [
+   4,
+   3,
+   "[E:cmd#39]"
+  ],
+  [
+   5,
+   35,
+   "[E:App.tsx:L11-L12]"
+  ],
+  [
+   6,
+   42,
+   "[E:services/geminiService.ts:L48-L77]"
+  ],
+  [
+   7,
+   14,
+   "[E:package.json:L7-L11]"
+  ],
+  [
+   8,
+   4,
+   "[E:services/geminiService.ts:L4-L6]"
+  ],
+  [
+   9,
+   28,
+   "[E:cmd#16]"
+  ]
+ ]
+}
