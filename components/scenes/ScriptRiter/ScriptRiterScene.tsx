@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect, ChangeEvent, useMemo }
 import { Role, NexusNode, Connection, Team, GeneratedRoleIdea } from '../../../types';
 import { communityRoles } from '../../../data/communityRoles';
 import { generateScenarioIdeas, parseRolesFromFileContent } from '../../../services/geminiService';
+import { newId, toRole, validateImportFile } from '../../../services/roleNormalizer';
 import PlusIcon from '../../shared-ui/icons/PlusIcon';
 import TrashIcon from '../../shared-ui/icons/TrashIcon';
 import WandIcon from '../../shared-ui/icons/WandIcon';
@@ -37,7 +38,7 @@ const ScriptRiterScene: React.FC = () => {
     const addRoleToScenario = (role: Role) => {
         const newNode: NexusNode = {
             ...role,
-            id: `node-${role.id}-${Date.now()}`,
+            id: newId(`node-${role.id}`),
             x: Math.random() * 500 + 100,
             y: Math.random() * 300 + 100,
         };
@@ -47,7 +48,7 @@ const ScriptRiterScene: React.FC = () => {
     const handleNodeClick = (nodeId: string) => {
         if (connectingNodeId && connectingNodeId !== nodeId) {
             const newConnection: Connection = {
-                id: `conn-${connectingNodeId}-${nodeId}-${Date.now()}`,
+                id: newId('conn'),
                 from: connectingNodeId,
                 to: nodeId,
                 type: 'neutral',
@@ -155,19 +156,17 @@ const ScriptRiterScene: React.FC = () => {
         const file = event.target.files?.[0];
         if (!file) return;
 
+        const rejection = validateImportFile(file);
+        if (rejection) {
+            alert(`Error importing roles: ${rejection}`);
+            if (event.target) event.target.value = '';
+            return;
+        }
+
         const content = await file.text();
         try {
             const parsedRoles = await parseRolesFromFileContent(content);
-            parsedRoles.forEach(role => {
-                 const newRole: Role = {
-                    ...role,
-                    id: `imported-${role.name.replace(/\s+/g, '-')}-${Date.now()}`,
-                    team: role.team as Team, // Assuming validation happens or types match
-                    abilities: [],
-                    isCustom: true,
-                };
-                addRoleToScenario(newRole);
-            });
+            parsedRoles.forEach(role => addRoleToScenario(toRole(role, 'imported')));
             alert(`${parsedRoles.length} roles imported successfully!`);
         } catch (error) {
             console.error("Failed to parse roles from file:", error);
@@ -360,16 +359,7 @@ const ScriptRiterScene: React.FC = () => {
                 <AIGenerationModal 
                     onClose={() => setAIGenModalOpen(false)}
                     onAddRoles={(roles) => {
-                         roles.forEach(role => {
-                            const newRole: Role = {
-                                ...role,
-                                id: `ai-${role.name.replace(/\s+/g, '-')}-${Date.now()}`,
-                                team: role.team as Team,
-                                abilities: [],
-                                isCustom: true,
-                            };
-                            addRoleToScenario(newRole);
-                        });
+                        roles.forEach(role => addRoleToScenario(toRole(role, 'ai')));
                     }}
                     existingRoles={nodes}
                 />

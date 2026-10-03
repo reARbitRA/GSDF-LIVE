@@ -24,3 +24,7 @@
 - Test-first cmd#30: 5/5 failed on old code. After fix cmd#31: product suite 15/15, typecheck 0 errors.
 - Baseline probe now fails its two *negative* assertions (module throws without key; bad-password not implemented) — expected: these encoded the defects. Baseline probe kept for the record; a post-remediation probe will be added at milestone close.
 - F-EXEC-001 CLOSED, F-RELY-002 CLOSED.
+
+### T-007 — Team normalisation, upload cap, collision-free ids
+- Files: services/roleNormalizer.ts (+), services/roleNormalizer.test.ts (+4 tests), ScriptRiterScene.tsx (newId/toRole/validateImportFile; `as Team` casts and Date.now() ids removed), geminiService.ts (prompt lists all 4 teams; file content fenced as untrusted data and sliced to MAX_IMPORT_BYTES).
+- Verify cmd#32: 19/19 tests, typecheck 0 errors, build OK. F-API-001, F-SEC-005, F-DATA-001 CLOSED.
