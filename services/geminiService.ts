@@ -1,11 +1,31 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Role, AIGenerationResponse, GeneratedRoleIdea } from '../types';
 
-if (!process.env.API_KEY) {
-  throw new Error("API_KEY environment variable not set");
+/** Thrown when an AI feature is used but no Gemini key was configured at build time. */
+export class AiUnavailableError extends Error {
+  constructor() {
+    super("AI features are unavailable: GEMINI_API_KEY was not configured for this build.");
+    this.name = "AiUnavailableError";
+  }
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+/** Per-request timeout for Gemini calls (ms). */
+export const GEMINI_TIMEOUT_MS = 30_000;
+
+/** True when a Gemini key was injected at build time (see vite.config.ts). */
+export const isAiConfigured = (): boolean => Boolean(process.env.API_KEY);
+
+let client: GoogleGenAI | null = null;
+/**
+ * Lazily construct the Gemini client. Never runs at module load, so the rest of the
+ * application (login, lobby, editor) works even when no key is configured.
+ */
+const getClient = (): GoogleGenAI => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) throw new AiUnavailableError();
+  if (!client) client = new GoogleGenAI({ apiKey });
+  return client;
+};
 
 export const generateScenarioIdeas = async (
   existingRoles: Role[],
@@ -45,10 +65,11 @@ export const generateScenarioIdeas = async (
 
 
   try {
-    const response = await ai.models.generateContent({
+    const response = await getClient().models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,
       config: {
+        abortSignal: AbortSignal.timeout(GEMINI_TIMEOUT_MS),
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
@@ -109,10 +130,11 @@ export const parseRolesFromFileContent = async (fileContent: string): Promise<Ge
   `;
 
   try {
-    const response = await ai.models.generateContent({
+    const response = await getClient().models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,
       config: {
+        abortSignal: AbortSignal.timeout(GEMINI_TIMEOUT_MS),
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
@@ -156,6 +178,7 @@ export const parseRolesFromFileContent = async (fileContent: string): Promise<Ge
     return parsedJson.roles as GeneratedRoleIdea[];
   } catch (error) {
     console.error("Error calling Gemini API for file parsing:", error);
+    if (error instanceof AiUnavailableError) throw error;
     if (error instanceof Error && error.message.startsWith("The AI")) {
         // Re-throw our custom user-facing errors
         throw error;

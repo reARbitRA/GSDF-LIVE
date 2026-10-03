@@ -18,3 +18,9 @@
 - Files: services/authService.ts (+), services/authService.test.ts (+4 tests), components/scenes/Gateway/DigitalIdCard.tsx (noValidate, disabled inactive inputs, sync validateForm, async authenticate via service, aria-label/aria-busy on submit so the button keeps an accessible name while loading, success transition 300 ms), GatewayScene.test.tsx (only change: ambiguous `/Password/i` → `/^Password$/i`; all assertions intact).
 - Test-first: cmd#26/#28 showed 5/6 then 4/6 failing; after fix cmd#29: 10/10 pass, typecheck 0 errors.
 - F-EXEC-005 closed (asserted manipulation error now implemented behind a clearly labelled STUB). F-SEC-002 remains OPEN/requires_human (stub is not security).
+
+### T-002 (P0) + T-008 — Lazy Gemini client; request timeout
+- Files: services/geminiService.ts (AiUnavailableError, isAiConfigured, getClient() lazy init, abortSignal: AbortSignal.timeout(30000) on both calls), services/geminiService.test.ts (+5 tests).
+- Test-first cmd#30: 5/5 failed on old code. After fix cmd#31: product suite 15/15, typecheck 0 errors.
+- Baseline probe now fails its two *negative* assertions (module throws without key; bad-password not implemented) — expected: these encoded the defects. Baseline probe kept for the record; a post-remediation probe will be added at milestone close.
+- F-EXEC-001 CLOSED, F-RELY-002 CLOSED.
