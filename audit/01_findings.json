@@ -640,5 +640,32 @@
   "requires_human": true,
   "human_reason": "Licence choice is a legal/business decision.",
   "status": "OPEN"
+ },
+ {
+  "id": "F-EXEC-007",
+  "title": "Digital-ID login with a non-email identifier is blocked by hidden email input validation",
+  "lane": "EXEC",
+  "dimension": "D1",
+  "severity": "P1",
+  "confidence": 1.0,
+  "evidence_grade": "A",
+  "evidence": [
+   "[E:components/scenes/Gateway/DigitalIdCard.tsx:L105-L144]",
+   "[E:cmd#27]"
+  ],
+  "impact": "Clicking Authenticate with an Operator ID such as 'operator1' never submits: the hidden magic-link <input type=email> (value shared via `identifier` state, not disabled, form lacks noValidate) fails constraint validation and the browser suppresses the submit event with no visible feedback.",
+  "exploit_or_repro": "render GatewayScene; type 'operator1' in Identifier; click Authenticate -> no alert, no loading (cmd#27). Repo test 'shows validation error for empty password in password mode' fails for this reason.",
+  "blast_radius": "all-users",
+  "remediation": "Add noValidate to the form (custom validation already exists) and disable inputs in inactive tab panels.",
+  "effort_hours": 0.25,
+  "mvp_blocking": true,
+  "blocks_journey": [
+   "J1"
+  ],
+  "pre_existing": true,
+  "requires_human": false,
+  "human_reason": null,
+  "status": "OPEN",
+  "freeze_exception": "FREEZE_EXCEPTION-001: discovered during T-001 verification (cmd#26/#27) after Phase 5 freeze; secondary validation = deterministic jsdom reproduction."
  }
 ]

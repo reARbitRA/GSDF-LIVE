@@ -81,6 +81,40 @@
    "status": "PENDING"
   },
   {
+   "task_id": "T-019",
+   "title": "Fix hidden-email constraint validation blocking Digital-ID login",
+   "source_findings": [
+    "F-EXEC-007"
+   ],
+   "lane": "EXEC",
+   "dimension": "D1",
+   "priority": "P1",
+   "verification_mode": "test-first",
+   "depends_on": [
+    "T-001"
+   ],
+   "files_to_touch": [
+    "components/scenes/Gateway/DigitalIdCard.tsx",
+    "components/scenes/Gateway/GatewayScene.test.tsx"
+   ],
+   "change_spec": "Add noValidate to <form>; add disabled={mode!=='password'} / disabled={mode!=='magic-link'} to tab-panel inputs so inactive inputs are excluded from validation. Fix ambiguous /Password/i selector in the existing test to /^Password$/i (assertions unchanged).",
+   "acceptance_criteria": [
+    "GIVEN identifier 'operator1' and empty password WHEN Authenticate clicked THEN 'Password field is required.' alert is shown"
+   ],
+   "verification_command": "npx vitest run components/scenes/Gateway",
+   "rollback": "git revert <commit of T-019>",
+   "effort_hours": 0.25,
+   "score_delta_estimate": {
+    "dimension": "D1",
+    "points": 18
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M0",
+   "status": "PENDING"
+  },
+  {
    "task_id": "T-003",
    "title": "Implement auth service boundary satisfying the existing Gateway test",
    "source_findings": [

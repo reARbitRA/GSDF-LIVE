@@ -23,6 +23,14 @@
   "sha256_relevant_file_set": "bda734be9c8ac86e9bd0bf9bacb198c60946b8aff827bccbdd4804fa573b51f0",
   "frozen_at_head": "ea81d4dac65a2ff23c7a736fd0f8b017a44a4535"
  },
- "freeze_exceptions": [],
+ "freeze_exceptions": [
+  {
+   "id": "FREEZE_EXCEPTION-001",
+   "finding": "F-EXEC-007",
+   "reason": "New P1 discovered by executing the repo's own test under a runner (cmd#26) and isolated reproduction (cmd#27).",
+   "secondary_validation": "Deterministic jsdom repro: alert undefined after click with identifier set; alert present with identifier empty.",
+   "new_sha256_findings": "ed5258e980be18482dda1a742717a266619cdf7ca021485b23d971198438238c"
+  }
+ ],
  "milestone_certificates": []
 }
