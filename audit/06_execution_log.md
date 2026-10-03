@@ -38,3 +38,7 @@
 - Files: services/scenarioStorage.ts (+), services/scenarioStorage.test.ts (+4), components/scenes/ScriptRiter/ScriptRiterScene.tsx (restore last-opened on mount, handleSave/handleNew/handleExport, NotificationBanner for import/AI errors, aria-labels, data-testid on nodes), ScriptRiterScene.test.tsx (+3), components/scenes/Gateway/Dashboard.tsx (alert → banner), services/geminiService.ts (console.* → logger).
 - Test-first: new scene tests written before wiring (Save button had no handler). Verify cmd#36: 29/29, typecheck 0; `git grep alert(` only matches orphan legacy files (removed in T-011).
 - F-EXEC-002, F-DATA-002, F-OBS-001 CLOSED.
+
+### T-006 — Tournament registration (local) + demo-data label
+- Files: services/registrationStorage.ts (+), components/scenes/Lobby/TournamentBrowser.tsx (Register/withdraw wired, counts reflect registration, aria-pressed, demo-data label, banner), TournamentBrowser.test.tsx (+4).
+- Test-first (tests target behaviour absent at baseline). Verify cmd#37: 33/33, typecheck 0. F-EXEC-003 CLOSED (with the explicit caveat that listings remain demo data until a backend exists).
