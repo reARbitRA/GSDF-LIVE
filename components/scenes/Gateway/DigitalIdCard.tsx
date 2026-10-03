@@ -5,6 +5,7 @@ import FingerPrintIcon from '../../shared-ui/icons/FingerPrintIcon';
 import CommandIcon from '../../shared-ui/icons/CommandIcon';
 import SpinnerIcon from '../../shared-ui/icons/SpinnerIcon';
 import CommandPalette from './CommandPalette';
+import { authenticateWithPassword, requestMagicLink, isValidEmail } from '../../../services/authService';
 
 interface DigitalIdCardProps {
   onAuthenticated: () => void;
@@ -12,6 +13,8 @@ interface DigitalIdCardProps {
 
 type AuthMode = 'password' | 'magic-link';
 type ErrorType = 'contradiction' | 'manipulation' | 'generic';
+/** Delay between the success announcement and the transition animation (ms). */
+const SUCCESS_TRANSITION_MS = 300;
 interface AuthError {
   message: string;
   type: ErrorType;
@@ -38,39 +41,39 @@ const DigitalIdCard: React.FC<DigitalIdCardProps> = ({ onAuthenticated }) => {
     }
   };
 
-  const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  /** Synchronous shape validation so feedback is immediate; the auth service re-validates. */
+  const validateForm = (): AuthError | null => {
+    if (!identifier) return { message: 'Identifier cannot be empty.', type: 'contradiction' };
+    if (mode === 'password' && !password) return { message: 'Password field is required.', type: 'contradiction' };
+    if (mode === 'magic-link' && !isValidEmail(identifier)) return { message: 'A valid email is required for magic link.', type: 'contradiction' };
+    return null;
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    if (!identifier) {
-      setError({ message: 'Identifier cannot be empty.', type: 'contradiction' });
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
       return;
-    }
-
-    if (mode === 'password' && !password) {
-      setError({ message: 'Password field is required.', type: 'contradiction' });
-      return;
-    }
-
-    if (mode === 'magic-link' && !validateEmail(identifier)) {
-        setError({ message: 'A valid email is required for magic link.', type: 'contradiction' });
-        return;
     }
 
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-        // Simulate successful authentication
-        if (statusRef.current) {
-          statusRef.current.textContent = 'Authentication successful. Initializing neural link...';
-        }
-        setTimeout(onAuthenticated, 1000);
-    }, 1500);
+    const result = mode === 'password'
+      ? await authenticateWithPassword(identifier, password)
+      : await requestMagicLink(identifier);
+
+    if (result.ok === false) {
+      setIsLoading(false);
+      setError({ message: result.message, type: result.type });
+      return;
+    }
+
+    if (statusRef.current) {
+      statusRef.current.textContent = 'Authentication successful. Initializing neural link...';
+    }
+    setTimeout(onAuthenticated, SUCCESS_TRANSITION_MS);
   };
 
   const TabButton: React.FC<{ current: AuthMode; target: AuthMode; children: React.ReactNode }> = ({ current, target, children }) => (
@@ -102,12 +105,13 @@ const DigitalIdCard: React.FC<DigitalIdCardProps> = ({ onAuthenticated }) => {
             <TabButton current={mode} target="password">Digital ID</TabButton>
             <TabButton current={mode} target="magic-link">Magic Link</TabButton>
         </div>
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="p-8 space-y-6" noValidate>
             <div className="relative" role="tabpanel" hidden={mode !== 'password'}>
                 <label htmlFor="identifier" className="block text-sm font-medium text-gray-400 font-mono">Identifier</label>
                 <input 
                     id="identifier" 
                     type="text" 
+                    disabled={mode !== 'password'}
                     value={identifier} 
                     onChange={e => setIdentifier(e.target.value)}
                     placeholder="Operator ID or Email"
@@ -121,6 +125,7 @@ const DigitalIdCard: React.FC<DigitalIdCardProps> = ({ onAuthenticated }) => {
                 <input 
                     id="password" 
                     type="password" 
+                    disabled={mode !== 'password'}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     placeholder="••••••••••••"
@@ -134,6 +139,7 @@ const DigitalIdCard: React.FC<DigitalIdCardProps> = ({ onAuthenticated }) => {
                 <input 
                     id="magic-link-email" 
                     type="email" 
+                    disabled={mode !== 'magic-link'}
                     value={identifier}
                     onChange={e => setIdentifier(e.target.value)}
                     placeholder="operator@gsdf.live"
@@ -158,6 +164,8 @@ const DigitalIdCard: React.FC<DigitalIdCardProps> = ({ onAuthenticated }) => {
             <button 
                 type="submit" 
                 disabled={isLoading}
+                aria-label={mode === 'magic-link' ? 'Send Magic Link' : 'Authenticate'}
+                aria-busy={isLoading}
                 className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-black bg-primary hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:bg-gray-600 disabled:cursor-not-allowed terminal-button"
             >
                 {isLoading ? <SpinnerIcon className="w-5 h-5"/> : (mode === 'magic-link' ? 'Send Magic Link' : 'Authenticate')}

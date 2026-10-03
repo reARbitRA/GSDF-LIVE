@@ -21,7 +21,7 @@ describe('GatewayScene and DigitalIdCard', () => {
   it('renders the Digital ID Card by default', () => {
     render(<GatewayScene onLoginSuccess={vi.fn()} />);
     expect(screen.getByLabelText(/Operator ID or Email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^Password$/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Authenticate/i })).toBeInTheDocument();
   });
 
@@ -62,7 +62,7 @@ describe('GatewayScene and DigitalIdCard', () => {
   it('displays a magenta "manipulation" error for a known bad password', async () => {
     render(<GatewayScene onLoginSuccess={vi.fn()} />);
     const identifierInput = screen.getByLabelText(/Operator ID or Email/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
+    const passwordInput = screen.getByLabelText(/^Password$/i);
     const authButton = screen.getByRole('button', { name: /Authenticate/i });
 
     fireEvent.change(identifierInput, { target: { value: 'operator1' } });
@@ -82,7 +82,7 @@ describe('GatewayScene and DigitalIdCard', () => {
     render(<GatewayScene onLoginSuccess={handleLoginSuccess} />);
 
     const identifierInput = screen.getByLabelText(/Operator ID or Email/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
+    const passwordInput = screen.getByLabelText(/^Password$/i);
     const authButton = screen.getByRole('button', { name: /Authenticate/i });
 
     fireEvent.change(identifierInput, { target: { value: 'testuser' } });

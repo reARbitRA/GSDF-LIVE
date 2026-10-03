@@ -13,3 +13,8 @@
 - Files: package.json (scripts test/typecheck; test libs → devDependencies; +vitest, jsdom, @vitest/coverage-v8, @testing-library/dom), package-lock.json (new), vitest.config.ts, vitest.setup.ts, tsconfig.json (types vitest/globals; exclude audit/dist), GatewayScene.test.tsx (jest.mock→vi.mock, @jest/globals→vitest; assertions untouched).
 - Verify [cmd#26]: `npm run typecheck` exit 0 (was 2). `npx vitest run` executes 6 tests: 1 pass / 5 fail — failures are pre-existing spec gaps F-EXEC-005 and newly found F-EXEC-007 (FREEZE_EXCEPTION-001), addressed by T-019/T-003 next. Baseline had 0 runnable tests, so no regression.
 - cmd#27 isolated repro: identifier='operator1' + click Authenticate → no alert; identifier='' → alert. Root cause: hidden <input type=email> shares `identifier` state, form lacks noValidate.
+
+### T-019 + T-003 — Gateway: fix hidden-email validation block; add auth service boundary
+- Files: services/authService.ts (+), services/authService.test.ts (+4 tests), components/scenes/Gateway/DigitalIdCard.tsx (noValidate, disabled inactive inputs, sync validateForm, async authenticate via service, aria-label/aria-busy on submit so the button keeps an accessible name while loading, success transition 300 ms), GatewayScene.test.tsx (only change: ambiguous `/Password/i` → `/^Password$/i`; all assertions intact).
+- Test-first: cmd#26/#28 showed 5/6 then 4/6 failing; after fix cmd#29: 10/10 pass, typecheck 0 errors.
+- F-EXEC-005 closed (asserted manipulation error now implemented behind a clearly labelled STUB). F-SEC-002 remains OPEN/requires_human (stub is not security).
