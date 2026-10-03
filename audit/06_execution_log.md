@@ -28,3 +28,8 @@
 ### T-007 — Team normalisation, upload cap, collision-free ids
 - Files: services/roleNormalizer.ts (+), services/roleNormalizer.test.ts (+4 tests), ScriptRiterScene.tsx (newId/toRole/validateImportFile; `as Team` casts and Date.now() ids removed), geminiService.ts (prompt lists all 4 teams; file content fenced as untrusted data and sliced to MAX_IMPORT_BYTES).
 - Verify cmd#32: 19/19 tests, typecheck 0 errors, build OK. F-API-001, F-SEC-005, F-DATA-001 CLOSED.
+
+### T-004 — ErrorBoundary + structured logger + reusable NotificationBanner
+- Files: components/shared-ui/core/ErrorBoundary.tsx (+), ErrorBoundary.test.tsx (+3), services/logger.ts (+), components/shared-ui/banners/NotificationBanner.tsx (rewritten: role=alert/status, dismiss, auto-dismiss), index.tsx (wrap App).
+- Discovered during typecheck: @types/react / @types/react-dom were absent, so every React type resolved to implicit `any` (cmd#33 error surfaced it). Installed both; typecheck still 0 errors with real types (cmd#34). Logged as part of F-EXEC-006 closure.
+- Verify cmd#35: 22/22 tests, typecheck 0. F-RELY-001 CLOSED.
