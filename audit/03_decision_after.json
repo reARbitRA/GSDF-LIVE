@@ -1,0 +1,45 @@
+{
+ "head_sha": "5410891ba86fe8cbf24594f5a25f87643de986f6",
+ "baseline_head": "ea81d4dac65a2ff23c7a736fd0f8b017a44a4535",
+ "verdict": "CONDITIONAL GO",
+ "matched_rule": "5",
+ "SUL": 1.0,
+ "R_point": 88.947,
+ "letter": "A-",
+ "ci95": [
+  82.347,
+  94.379
+ ],
+ "audit_confidence": 98.0,
+ "coverage_ratio": 1.0,
+ "grade_AB_share": 1.0,
+ "spot_check_pass_rate": 0.9,
+ "spot_check_note": "cmd#47: 9/10 verbatim; token [E:cmd#6] reproduced exit code 2 but error count differs (12\u21921) because the dependency tree now contains @types/react and vitest typings. D5 re-audited: current tsc exit 0 (cmd#42, cmd#47).",
+ "severity": {
+  "P0": 0,
+  "P1": 2,
+  "P2": 3,
+  "P3": 0
+ },
+ "journeys": {
+  "VERIFIED_WORKING": 4,
+  "PARTIAL": 0,
+  "BROKEN": 0,
+  "UNTESTABLE": 1
+ },
+ "unmet_conditions": [
+  "all journeys VERIFIED_WORKING: J5 (AI generate/import) is UNTESTABLE without a Gemini key \u2014 human must run it with a referrer-restricted key",
+  "Open P1 F-SEC-001 (key in bundle) and F-SEC-002 (stub auth) require human decisions (T-015, T-016)",
+  "LICENSE choice (F-LEGAL-001, T-017)"
+ ],
+ "hard_gates": [],
+ "distance_to_go_points": 0,
+ "blocking_effort_hours": 14.0,
+ "top5_blockers": [
+  "F-SEC-002 P1 stub authentication \u2014 needs IdP (T-016, human)",
+  "F-SEC-001 P1 Gemini key in client bundle \u2014 needs proxy (T-015, human)",
+  "F-LEGAL-001 P2 no LICENSE (T-017, human)",
+  "F-SEC-004 P2 Tailwind/aistudiocdn without SRI/CSP",
+  "F-QUAL-002 P2 ScriptRiterScene 798 LOC (T-018 backlog)"
+ ]
+}

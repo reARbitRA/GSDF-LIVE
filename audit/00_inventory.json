@@ -1,0 +1,233 @@
+{
+ "arbiter_version": "ARBITER-MVP v2.2",
+ "phase0_started": "2026-10-03T15:30:00+03:30",
+ "head_sha": "ea81d4dac65a2ff23c7a736fd0f8b017a44a4535",
+ "short_sha": "ea81d4d",
+ "work_branch": "arena/01a1025f-gsdf-live",
+ "branch_deviation": "Protocol requests audit/mvp-readiness-ea81d4d; session is pinned to arena/01a1025f-gsdf-live. All audit work committed there. [E:cmd#1]",
+ "repo_physics": {
+  "tracked_files": 69,
+  "loc_total_tracked": 8752,
+  "loc_ts_tsx": 8444,
+  "commits": 1,
+  "contributors": 1,
+  "last_commit": "2025-09-12T21:53:05+03:30",
+  "days_since_last_commit": 386,
+  "evidence": [
+   "[E:cmd#1]",
+   "[E:cmd#10]"
+  ]
+ },
+ "toolchain": {
+  "node": "v22.22.3",
+  "npm": "10.9.8",
+  "vite": "6.4.3",
+  "typescript": "~5.8.2",
+  "react": "^19.1.1",
+  "genai": "@google/genai ^1.17.0",
+  "evidence": [
+   "[E:cmd#1]",
+   "[E:cmd#5]",
+   "[E:package.json:L12-L22]"
+  ]
+ },
+ "manifests_found": [
+  "package.json",
+  "tsconfig.json",
+  "vite.config.ts",
+  "metadata.json",
+  "index.html",
+  ".gitignore"
+ ],
+ "manifests_absent": [
+  "Dockerfile",
+  "docker-compose*",
+  "*.tf",
+  "k8s/",
+  "helm/",
+  ".github/workflows/",
+  "LICENSE",
+  ".env.example",
+  "lockfile (none committed)",
+  "eslint config",
+  "jest/vitest config"
+ ],
+ "stack": "Client-only React 19 SPA (Vite 6, TypeScript 5.8, Tailwind via CDN) calling Google Gemini directly from the browser via @google/genai. No backend, no database, no router.",
+ "architecture_ascii": "\n index.html (Tailwind CDN + importmap -> aistudiocdn.com)            [E:index.html:L8,L191-L203]\n   \u2514\u2500 index.tsx \u2500\u2500> App.tsx (useState auth flag + page switch)        [E:App.tsx:L10-L45]\n        \u251c\u2500 scenes/Gateway/GatewayScene \u2500> DigitalIdCard (fake auth, setTimeout)  [E:DigitalIdCard.tsx:L64-L73]\n        \u2502                              \u2514> NeuralWeaveAnimation \u2500> onLoginSuccess\n        \u251c\u2500 shared-ui/navigation/Header (Dashboard | Script Riter | Tournaments)\n        \u251c\u2500 scenes/Gateway/Dashboard (static stats, ActionCards)\n        \u251c\u2500 scenes/Lobby/TournamentBrowser (hard-coded mockTournaments[5])          [E:TournamentBrowser.tsx:L4-L10]\n        \u2514\u2500 scenes/ScriptRiter/ScriptRiterScene (757 LOC canvas editor)\n             \u251c\u2500 data/communityRoles.ts (477 roles, 4296 LOC)                    [E:cmd#16]\n             \u2514\u2500 services/geminiService.ts \u2500\u2500HTTPS\u2500\u2500> Google Gemini (API key in bundle)  [E:vite.config.ts:L8-L9]\n ORPHANS (not imported from entry): 18 files incl. legacy components/* duplicates, Nexus/ScenarioEditor, scene stubs  [E:cmd#11]\n",
+ "surface_inventory": [
+  {
+   "name": "Gateway login form",
+   "path": "components/scenes/Gateway/DigitalIdCard.tsx:L45-L74",
+   "auth_enforced": "SIMULATED (any input accepted)",
+   "input_validated": "non-empty + email regex",
+   "automated_tests": "GatewayScene.test.tsx (not runnable)",
+   "journey_link": "J1"
+  },
+  {
+   "name": "Header nav (3 pages)",
+   "path": "components/shared-ui/navigation/Header.tsx:L39-L41",
+   "auth_enforced": "client flag only",
+   "input_validated": "n/a",
+   "automated_tests": "none",
+   "journey_link": "J2"
+  },
+  {
+   "name": "Script Riter canvas / Save / Import / AI",
+   "path": "components/scenes/ScriptRiter/ScriptRiterScene.tsx:L227-L238",
+   "auth_enforced": "client flag only",
+   "input_validated": "none on file upload",
+   "automated_tests": "none",
+   "journey_link": "J3,J5"
+  },
+  {
+   "name": "Tournament browser + Register",
+   "path": "components/scenes/Lobby/TournamentBrowser.tsx:L46-L51",
+   "auth_enforced": "client flag only",
+   "input_validated": "n/a",
+   "automated_tests": "none",
+   "journey_link": "J4"
+  },
+  {
+   "name": "Gemini generateScenarioIdeas",
+   "path": "services/geminiService.ts:L10-L92",
+   "auth_enforced": "API key in client",
+   "input_validated": "responseSchema only",
+   "automated_tests": "none",
+   "journey_link": "J5"
+  },
+  {
+   "name": "Gemini parseRolesFromFileContent",
+   "path": "services/geminiService.ts:L94-L166",
+   "auth_enforced": "API key in client",
+   "input_validated": "none (raw file text)",
+   "automated_tests": "none",
+   "journey_link": "J5"
+  }
+ ],
+ "data_model": {
+  "persistence": "NONE \u2014 all state is React useState; no DB, no localStorage, no migrations [E:App.tsx:L11-L12][E:ScriptRiterScene.tsx:L21-L24]",
+  "types": "types.ts: Team enum(4), Role, NexusNode, Connection, Scenario, Tournament, AIGenerationResponse [E:types.ts:L1-L66]"
+ },
+ "config_three_way_diff": {
+  "read_in_code": [
+   "process.env.API_KEY (services/geminiService.ts:L4,L8)"
+  ],
+  "defined_by_build": [
+   "GEMINI_API_KEY -> process.env.API_KEY and process.env.GEMINI_API_KEY (vite.config.ts:L8-L9)"
+  ],
+  "documented": [
+   "README.md:L17 says set GEMINI_API_KEY in .env.local"
+  ],
+  "env_example": "ABSENT [E:cmd#9]",
+  "ci_deploy_defined": "NO CI/DEPLOY MANIFESTS [E:cmd#1]",
+  "discrepancies": [
+   "process.env.GEMINI_API_KEY is defined by the build but never read in code",
+   "No .env.example",
+   "No CI secret wiring; key is compiled into the client bundle"
+  ]
+ },
+ "supply_chain": {
+  "npm_audit": {
+   "critical": 0,
+   "high": 0,
+   "moderate": 0,
+   "low": 0,
+   "info": 0,
+   "evidence": "[E:cmd#7]"
+  },
+  "direct_deps": 6,
+  "direct_dev_deps": 3,
+  "lockfile_committed": false,
+  "note": "Test libraries (@testing-library/*, @jest/globals) are in `dependencies` and in the production importmap [E:package.json:L11-L16][E:index.html:L198-L200]"
+ },
+ "test_topology": {
+  "framework_declared": "none (no test script, no jest/vitest config) [E:package.json:L7-L11]",
+  "test_files": [
+   "components/scenes/Gateway/GatewayScene.test.tsx (101 LOC, 6 it-blocks, ~17 expect calls, uses jest.mock + @jest/globals)"
+  ],
+  "runnable": false,
+  "evidence": [
+   "[E:cmd#6]",
+   "[E:cmd#22]"
+  ]
+ },
+ "mvp_definition": {
+  "scope_inferred": true,
+  "source_of_truth": [
+   "metadata.json:L1-L5 (product description)",
+   "README.md:L1-L20 (AI Studio template)",
+   "App.tsx route surface L8,L19-L29",
+   "Header.tsx L39-L41"
+  ],
+  "product_statement": "The official platform of the GLOBAL SOCIAL-DEDUCTION FEDERATION, featuring live tournaments, a powerful scenario editor, and AI-driven analysis tools. [E:metadata.json:L3]",
+  "primary_user_journeys": [
+   {
+    "id": "J1",
+    "actor": "Operator",
+    "action": "Open app, authenticate on Gateway (Digital ID or Magic Link)",
+    "expected": "Lands in Tournaments lobby"
+   },
+   {
+    "id": "J2",
+    "actor": "Operator",
+    "action": "Navigate Dashboard / Script Riter / Tournaments via header",
+    "expected": "Each page renders"
+   },
+   {
+    "id": "J3",
+    "actor": "Scenario designer",
+    "action": "In Script Riter add roles from the community library to the canvas, connect/edit them, Save",
+    "expected": "Scenario is persisted and can be reopened"
+   },
+   {
+    "id": "J4",
+    "actor": "Player",
+    "action": "Browse/filter tournaments and Register for an upcoming one",
+    "expected": "Registration is recorded and reflected in the UI"
+   },
+   {
+    "id": "J5",
+    "actor": "Scenario designer",
+    "action": "Generate roles with AI / import roles from a file",
+    "expected": "New roles appear on canvas; errors are surfaced"
+   }
+  ],
+  "in_scope": [
+   "Gateway auth UI",
+   "Dashboard",
+   "Script Riter editor",
+   "Tournament browser",
+   "Gemini-backed generation/import"
+  ],
+  "out_of_scope": [
+   "Tribunal/Interrogation/Results scenes (12-LOC stubs)",
+   "analysis-tools, progression (stubs)",
+   "Nexus/ScenarioEditor (orphan)",
+   "real-time game play"
+  ]
+ },
+ "relevant_file_set": [
+  "index.html",
+  "index.tsx",
+  "App.tsx",
+  "types.ts",
+  "vite.config.ts",
+  "package.json",
+  "tsconfig.json",
+  "services/geminiService.ts",
+  "components/scenes/Gateway/GatewayScene.tsx",
+  "components/scenes/Gateway/DigitalIdCard.tsx",
+  "components/scenes/Gateway/NeuralWeaveAnimation.tsx",
+  "components/scenes/Gateway/CommandPalette.tsx",
+  "components/scenes/Gateway/Dashboard.tsx",
+  "components/scenes/Gateway/GatewayScene.test.tsx",
+  "components/shared-ui/navigation/Header.tsx",
+  "components/scenes/Lobby/TournamentBrowser.tsx",
+  "components/scenes/ScriptRiter/ScriptRiterScene.tsx",
+  "data/communityRoles.ts"
+ ],
+ "sampling": {
+  "applied": false,
+  "reason": "69 files / 8.7k LOC \u2014 full read of all journey files"
+ }
+}

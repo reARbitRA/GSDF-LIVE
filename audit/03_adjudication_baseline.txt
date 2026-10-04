@@ -1,0 +1,26 @@
+═══════════════════════════════════════════════════════════
+  ARBITER-MVP v2.2 — LAUNCH ADJUDICATION — ea81d4dac65a2ff23c7a736fd0f8b017a44a4535
+═══════════════════════════════════════════════════════════
+  VERDICT           : NO-GO — BLOCKED
+  SCORE-ROBUSTNESS  : SUL 0.00 (Score-Uncertainty GO Likelihood; NOT a market probability)
+  READINESS SCORE   : 53.124 / 100  (Grade D)
+  95% CI (MC)       : [47.119, 59.218]  N=10000 seed=424242 ε~N(0,3)
+  AUDIT CONFIDENCE  : 100.0%  (Coverage: 100%, Grade A/B: 100%, Spot-Check: 100%)
+  ───────────────────────────────────────────────────────────
+  P0: 1  P1: 8  P2: 15  P3: 2
+  JOURNEYS          : 1 VERIFIED / 3 PARTIAL / 0 BROKEN / 1 UNTESTABLE
+  UNMET CONDITIONS  : P0_count==0 (is 1); P1_count<=2 (is 8); all journeys VERIFIED_WORKING (1/5); SUL>=0.85 (is 0.0)
+  HARD GATES TRIPPED: P0_count>=1 -> SUL<=0.05; P1_count>=5 -> SUL<=0.35
+  ───────────────────────────────────────────────────────────
+  DISTANCE TO GO    : 21.876 pts | 4.0 hrs
+  TOP 5 BLOCKERS    :
+    - F-EXEC-001 P0 app throws at module load without GEMINI_API_KEY
+
+    - F-EXEC-002 P1 Save button is a no-op (J3)
+
+    - F-EXEC-003 P1 Register is a no-op on mock data (J4)
+
+    - F-SEC-001 P1 Gemini key compiled into client bundle
+
+    - F-SEC-002 P1 auth accepts any credentials
+═══════════════════════════════════════════════════════════

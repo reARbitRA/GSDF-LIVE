@@ -1,0 +1,92 @@
+{
+ "head_sha": "ea81d4dac65a2ff23c7a736fd0f8b017a44a4535",
+ "checks": {
+  "install": {
+   "cmd": "npm install --ignore-scripts",
+   "exit": 0,
+   "evidence": "[E:cmd#4]"
+  },
+  "build": {
+   "cmd": "npx vite build",
+   "exit": 0,
+   "note": "668.41 kB single chunk warning",
+   "evidence": "[E:cmd#5]"
+  },
+  "typecheck": {
+   "cmd": "npx tsc --noEmit",
+   "exit": 2,
+   "errors": 12,
+   "note": "all in GatewayScene.test.tsx (jest-dom matchers not typed)",
+   "evidence": "[E:cmd#6]"
+  },
+  "lint": {
+   "cmd": "n/a",
+   "exit": null,
+   "note": "no linter configured"
+  },
+  "test": {
+   "cmd": "npm test",
+   "exit": null,
+   "note": "no test script; no runner; repo test not executable",
+   "evidence": "[E:cmd#22]"
+  },
+  "audit": {
+   "cmd": "npm audit --json",
+   "exit": 0,
+   "vulns_total": 0,
+   "evidence": "[E:cmd#7]"
+  },
+  "journey_probe": {
+   "cmd": "npx vitest run --config audit/probe/vitest.probe.config.ts",
+   "exit": 0,
+   "tests": "6/6",
+   "evidence": "[E:cmd#21]"
+  }
+ },
+ "coverage": {
+  "tool_available": false,
+  "value": 0.0
+ },
+ "pass_rate": {
+  "runnable_tests": 0,
+  "passing": 0,
+  "value": 0.0
+ },
+ "green_definition": "build exit 0 AND typecheck exit 0 AND (once added) npm test exit 0 AND journey probe 6/6",
+ "after": {
+  "head_sha": "5410891ba86fe8cbf24594f5a25f87643de986f6",
+  "checks": {
+   "install": {
+    "exit": 0,
+    "evidence": "[E:cmd#40]"
+   },
+   "build": {
+    "exit": 0,
+    "chunks": "257.06 kB + 186.85 kB",
+    "evidence": "[E:cmd#38]"
+   },
+   "typecheck": {
+    "exit": 0,
+    "evidence": "[E:cmd#42]"
+   },
+   "test": {
+    "cmd": "npm test",
+    "exit": 0,
+    "tests": "33/33",
+    "evidence": "[E:cmd#42]"
+   },
+   "coverage": {
+    "lines": 55.71,
+    "evidence": "[E:cmd#42]"
+   },
+   "audit": {
+    "vulns_total": 0,
+    "evidence": "[E:cmd#42]"
+   },
+   "journey_probe_after": {
+    "tests": "5/5",
+    "evidence": "[E:cmd#43]"
+   }
+  }
+ }
+}

@@ -1,35 +1,39 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import GatewayScene from './GatewayScene';
-import { describe, it, expect, jest } from '@jest/globals';
+import { describe, it, expect, vi } from 'vitest';
 
 // Mock child components to isolate tests to GatewayScene and DigitalIdCard logic
-jest.mock('./NeuralWeaveAnimation', () => ({ onAnimationComplete }: { onAnimationComplete: () => void }) => {
-  // Immediately call the completion callback to simulate animation end
-  React.useEffect(() => {
-    onAnimationComplete();
-  }, [onAnimationComplete]);
-  return <div data-testid="neural-weave-animation">Animating...</div>;
+vi.mock('./NeuralWeaveAnimation', async () => {
+  const React = await import('react');
+  return {
+    default: ({ onAnimationComplete }: { onAnimationComplete: () => void }) => {
+      // Immediately call the completion callback to simulate animation end
+      React.useEffect(() => {
+        onAnimationComplete();
+      }, [onAnimationComplete]);
+      return <div data-testid="neural-weave-animation">Animating...</div>;
+    },
+  };
 });
 
 describe('GatewayScene and DigitalIdCard', () => {
   it('renders the Digital ID Card by default', () => {
-    render(<GatewayScene onLoginSuccess={jest.fn()} />);
+    render(<GatewayScene onLoginSuccess={vi.fn()} />);
     expect(screen.getByLabelText(/Operator ID or Email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^Password$/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Authenticate/i })).toBeInTheDocument();
   });
 
   it('shows validation error for empty identifier', () => {
-    render(<GatewayScene onLoginSuccess={jest.fn()} />);
+    render(<GatewayScene onLoginSuccess={vi.fn()} />);
     const authButton = screen.getByRole('button', { name: /Authenticate/i });
     fireEvent.click(authButton);
     expect(screen.getByText('Identifier cannot be empty.')).toBeInTheDocument();
   });
 
   it('shows validation error for empty password in password mode', () => {
-    render(<GatewayScene onLoginSuccess={jest.fn()} />);
+    render(<GatewayScene onLoginSuccess={vi.fn()} />);
     const identifierInput = screen.getByLabelText(/Operator ID or Email/i);
     const authButton = screen.getByRole('button', { name: /Authenticate/i });
 
@@ -42,7 +46,7 @@ describe('GatewayScene and DigitalIdCard', () => {
   });
 
   it('switches to magic-link mode and validates email', () => {
-    render(<GatewayScene onLoginSuccess={jest.fn()} />);
+    render(<GatewayScene onLoginSuccess={vi.fn()} />);
     const magicLinkTab = screen.getByRole('tab', { name: /Magic Link/i });
     fireEvent.click(magicLinkTab);
     
@@ -56,9 +60,9 @@ describe('GatewayScene and DigitalIdCard', () => {
   });
 
   it('displays a magenta "manipulation" error for a known bad password', async () => {
-    render(<GatewayScene onLoginSuccess={jest.fn()} />);
+    render(<GatewayScene onLoginSuccess={vi.fn()} />);
     const identifierInput = screen.getByLabelText(/Operator ID or Email/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
+    const passwordInput = screen.getByLabelText(/^Password$/i);
     const authButton = screen.getByRole('button', { name: /Authenticate/i });
 
     fireEvent.change(identifierInput, { target: { value: 'operator1' } });
@@ -74,11 +78,11 @@ describe('GatewayScene and DigitalIdCard', () => {
   });
 
   it('calls onLoginSuccess after successful authentication', async () => {
-    const handleLoginSuccess = jest.fn();
+    const handleLoginSuccess = vi.fn();
     render(<GatewayScene onLoginSuccess={handleLoginSuccess} />);
 
     const identifierInput = screen.getByLabelText(/Operator ID or Email/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
+    const passwordInput = screen.getByLabelText(/^Password$/i);
     const authButton = screen.getByRole('button', { name: /Authenticate/i });
 
     fireEvent.change(identifierInput, { target: { value: 'testuser' } });

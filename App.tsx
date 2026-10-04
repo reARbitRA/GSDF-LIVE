@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import Header from './components/shared-ui/navigation/Header';
 import Dashboard from './components/scenes/Gateway/Dashboard';
-import ScriptRiterScene from './components/scenes/ScriptRiter/ScriptRiterScene';
+// Lazy: pulls the 125 kB community-role dataset and the Gemini SDK only when the editor is opened.
+const ScriptRiterScene = lazy(() => import('./components/scenes/ScriptRiter/ScriptRiterScene'));
 import TournamentBrowser from './components/scenes/Lobby/TournamentBrowser';
 import GatewayScene from './components/scenes/Gateway/GatewayScene';
 
@@ -21,7 +22,11 @@ const App: React.FC = () => {
       case 'dashboard':
         return <Dashboard setPage={setCurrentPage} />;
       case 'script-riter':
-        return <ScriptRiterScene />;
+        return (
+          <Suspense fallback={<div className="p-8 text-center font-mono text-gray-400" role="status">Loading Script Riter…</div>}>
+            <ScriptRiterScene />
+          </Suspense>
+        );
       case 'tournaments':
         return <TournamentBrowser />;
       default:

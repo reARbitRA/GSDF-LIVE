@@ -1,0 +1,684 @@
+{
+ "derived_from_findings_sha256": "e8a812c557e3d4b81bae2b8a2fbe1df880350c05d8a728f6e6ba97b26998d842",
+ "milestones": {
+  "M0": "P0==0",
+  "M1": "P1<=2 & journeys VW",
+  "M2": "R_point>=75",
+  "M3": "GO",
+  "M4": "backlog"
+ },
+ "tasks": [
+  {
+   "task_id": "T-001",
+   "title": "Add vitest runner, typecheck script, port Gateway test",
+   "source_findings": [
+    "F-EXEC-004",
+    "F-EXEC-006"
+   ],
+   "lane": "EXEC",
+   "dimension": "D2",
+   "priority": "P1",
+   "verification_mode": "check-first",
+   "depends_on": [],
+   "files_to_touch": [
+    "package.json",
+    "vitest.config.ts",
+    "vitest.setup.ts",
+    "tsconfig.json",
+    "components/scenes/Gateway/GatewayScene.test.tsx"
+   ],
+   "change_spec": "Add vitest+jsdom config (environment jsdom, globals off, setup imports @testing-library/jest-dom/vitest), scripts test/typecheck, move test libs to devDependencies, convert jest.mock/@jest/globals to vi.mock/vitest in the existing test without weakening any assertion.",
+   "acceptance_criteria": [
+    "`npm run typecheck` exits 0",
+    "`npm test -- --run` executes GatewayScene.test.tsx"
+   ],
+   "verification_command": "npm run typecheck && npx vitest run --reporter=dot",
+   "rollback": "git revert <commit of T-001>",
+   "effort_hours": 1.5,
+   "score_delta_estimate": {
+    "dimension": "D5",
+    "points": 52
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M0",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-002",
+   "title": "Lazy-initialise Gemini client; never throw at module load",
+   "source_findings": [
+    "F-EXEC-001"
+   ],
+   "lane": "EXEC",
+   "dimension": "D1",
+   "priority": "P0",
+   "verification_mode": "test-first",
+   "depends_on": [
+    "T-001"
+   ],
+   "files_to_touch": [
+    "services/geminiService.ts",
+    "services/geminiService.test.ts"
+   ],
+   "change_spec": "Replace top-level `if(!process.env.API_KEY) throw` + eager `new GoogleGenAI` with getClient() that throws AiUnavailableError only when an AI function is invoked; export isAiConfigured().",
+   "acceptance_criteria": [
+    "GIVEN API_KEY undefined WHEN importing App THEN import resolves and Gateway renders",
+    "GIVEN API_KEY undefined WHEN generateScenarioIdeas called THEN returns null and no uncaught throw"
+   ],
+   "verification_command": "npx vitest run services/geminiService.test.ts audit/probe",
+   "rollback": "git revert <commit of T-002>",
+   "effort_hours": 0.5,
+   "score_delta_estimate": {
+    "dimension": "D1",
+    "points": 45
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M0",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-019",
+   "title": "Fix hidden-email constraint validation blocking Digital-ID login",
+   "source_findings": [
+    "F-EXEC-007"
+   ],
+   "lane": "EXEC",
+   "dimension": "D1",
+   "priority": "P1",
+   "verification_mode": "test-first",
+   "depends_on": [
+    "T-001"
+   ],
+   "files_to_touch": [
+    "components/scenes/Gateway/DigitalIdCard.tsx",
+    "components/scenes/Gateway/GatewayScene.test.tsx"
+   ],
+   "change_spec": "Add noValidate to <form>; add disabled={mode!=='password'} / disabled={mode!=='magic-link'} to tab-panel inputs so inactive inputs are excluded from validation. Fix ambiguous /Password/i selector in the existing test to /^Password$/i (assertions unchanged).",
+   "acceptance_criteria": [
+    "GIVEN identifier 'operator1' and empty password WHEN Authenticate clicked THEN 'Password field is required.' alert is shown"
+   ],
+   "verification_command": "npx vitest run components/scenes/Gateway",
+   "rollback": "git revert <commit of T-019>",
+   "effort_hours": 0.25,
+   "score_delta_estimate": {
+    "dimension": "D1",
+    "points": 18
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M0",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-003",
+   "title": "Implement auth service boundary satisfying the existing Gateway test",
+   "source_findings": [
+    "F-EXEC-005",
+    "F-SEC-002"
+   ],
+   "lane": "EXEC",
+   "dimension": "D2",
+   "priority": "P2",
+   "verification_mode": "test-first",
+   "depends_on": [
+    "T-001"
+   ],
+   "files_to_touch": [
+    "services/authService.ts",
+    "services/authService.test.ts",
+    "components/scenes/Gateway/DigitalIdCard.tsx"
+   ],
+   "change_spec": "Add authenticate(identifier,password) returning {ok}|{ok:false,type,message}; stub rejects a denylist of trivially weak passwords with the 'Signal manipulation detected' message the repo test asserts; DigitalIdCard uses it and shows the alert. Clearly labelled STUB pending IdP (F-SEC-002 stays open/requires_human).",
+   "acceptance_criteria": [
+    "All 6 cases in GatewayScene.test.tsx pass unmodified in intent"
+   ],
+   "verification_command": "npx vitest run components/scenes/Gateway",
+   "rollback": "git revert <commit of T-003>",
+   "effort_hours": 1.0,
+   "score_delta_estimate": {
+    "dimension": "D2",
+    "points": 20
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M1",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-004",
+   "title": "Add ErrorBoundary around App",
+   "source_findings": [
+    "F-RELY-001"
+   ],
+   "lane": "RELY",
+   "dimension": "D7",
+   "priority": "P2",
+   "verification_mode": "test-first",
+   "depends_on": [
+    "T-001"
+   ],
+   "files_to_touch": [
+    "components/shared-ui/core/ErrorBoundary.tsx",
+    "components/shared-ui/core/ErrorBoundary.test.tsx",
+    "index.tsx"
+   ],
+   "change_spec": "Class component catching render errors, rendering a recovery panel with reload button; logs via logger.",
+   "acceptance_criteria": [
+    "GIVEN child throws WHEN rendered THEN fallback visible and no uncaught error"
+   ],
+   "verification_command": "npx vitest run components/shared-ui/core",
+   "rollback": "git revert <commit of T-004>",
+   "effort_hours": 0.5,
+   "score_delta_estimate": {
+    "dimension": "D7",
+    "points": 5.4
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M1",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-005",
+   "title": "Implement Save/Load/Export for Script Riter scenarios",
+   "source_findings": [
+    "F-EXEC-002",
+    "F-DATA-002"
+   ],
+   "lane": "EXEC",
+   "dimension": "D1",
+   "priority": "P1",
+   "verification_mode": "test-first",
+   "depends_on": [
+    "T-002"
+   ],
+   "files_to_touch": [
+    "services/scenarioStorage.ts",
+    "services/scenarioStorage.test.ts",
+    "components/scenes/ScriptRiter/ScriptRiterScene.tsx"
+   ],
+   "change_spec": "localStorage-backed save (key gsdf.scenarios.v1) with name, nodes, connections, description; Save button persists and notifies; on mount restore last-saved scenario; add Export JSON download.",
+   "acceptance_criteria": [
+    "GIVEN nodes on canvas WHEN Save clicked THEN localStorage contains scenario and banner confirms",
+    "GIVEN saved scenario WHEN scene remounts THEN nodes restored"
+   ],
+   "verification_command": "npx vitest run services/scenarioStorage.test.ts components/scenes/ScriptRiter",
+   "rollback": "git revert <commit of T-005>",
+   "effort_hours": 2.0,
+   "score_delta_estimate": {
+    "dimension": "D1",
+    "points": 16
+   },
+   "risk_of_regression": "medium",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M1",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-006",
+   "title": "Implement tournament Register with local registration state",
+   "source_findings": [
+    "F-EXEC-003"
+   ],
+   "lane": "EXEC",
+   "dimension": "D1",
+   "priority": "P1",
+   "verification_mode": "test-first",
+   "depends_on": [
+    "T-002"
+   ],
+   "files_to_touch": [
+    "services/registrationStorage.ts",
+    "components/scenes/Lobby/TournamentBrowser.tsx",
+    "components/scenes/Lobby/TournamentBrowser.test.tsx"
+   ],
+   "change_spec": "Register increments participants and marks 'Registered' (persist in localStorage); label mock data source visibly as 'demo data'.",
+   "acceptance_criteria": [
+    "GIVEN Upcoming tournament WHEN Register clicked THEN button reads Registered and participants+1"
+   ],
+   "verification_command": "npx vitest run components/scenes/Lobby",
+   "rollback": "git revert <commit of T-006>",
+   "effort_hours": 1.5,
+   "score_delta_estimate": {
+    "dimension": "D1",
+    "points": 16
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M1",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-007",
+   "title": "Validate team values, cap upload size, use UUID ids",
+   "source_findings": [
+    "F-API-001",
+    "F-SEC-005",
+    "F-DATA-001"
+   ],
+   "lane": "API",
+   "dimension": "D9",
+   "priority": "P2",
+   "verification_mode": "test-first",
+   "depends_on": [
+    "T-002"
+   ],
+   "files_to_touch": [
+    "services/roleNormalizer.ts",
+    "services/roleNormalizer.test.ts",
+    "services/geminiService.ts",
+    "components/scenes/ScriptRiter/ScriptRiterScene.tsx"
+   ],
+   "change_spec": "normaliseTeam() maps strings to Team enum (default INDEPENDENT); MAX_IMPORT_BYTES=200000 enforced before reading; prompt lists all 4 teams; ids via crypto.randomUUID().",
+   "acceptance_criteria": [
+    "normaliseTeam('villager')===Team.TOWN? no: unknown -> INDEPENDENT; 'mafia'->MAFIA",
+    "file > 200 KB rejected with user message"
+   ],
+   "verification_command": "npx vitest run services/roleNormalizer.test.ts",
+   "rollback": "git revert <commit of T-007>",
+   "effort_hours": 1.0,
+   "score_delta_estimate": {
+    "dimension": "D9",
+    "points": 5.4
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M1",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-008",
+   "title": "Add request timeout to Gemini calls",
+   "source_findings": [
+    "F-RELY-002"
+   ],
+   "lane": "RELY",
+   "dimension": "D7",
+   "priority": "P2",
+   "verification_mode": "check-first",
+   "depends_on": [
+    "T-002"
+   ],
+   "files_to_touch": [
+    "services/geminiService.ts"
+   ],
+   "change_spec": "AbortSignal.timeout(30000) passed via config.abortSignal (verify field exists in @google/genai types).",
+   "acceptance_criteria": [
+    "grep abortSignal services/geminiService.ts returns 2 call sites"
+   ],
+   "verification_command": "grep -c abortSignal services/geminiService.ts | grep -q 2 && npm run typecheck",
+   "rollback": "git revert <commit of T-008>",
+   "effort_hours": 0.5,
+   "score_delta_estimate": {
+    "dimension": "D7",
+    "points": 5.4
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M2",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-009",
+   "title": "Replace alert()/console.error with logger + NotificationBanner",
+   "source_findings": [
+    "F-OBS-001"
+   ],
+   "lane": "OBS",
+   "dimension": "D7",
+   "priority": "P2",
+   "verification_mode": "check-first",
+   "depends_on": [
+    "T-005",
+    "T-006"
+   ],
+   "files_to_touch": [
+    "services/logger.ts",
+    "components/scenes/ScriptRiter/ScriptRiterScene.tsx",
+    "components/scenes/Gateway/Dashboard.tsx"
+   ],
+   "change_spec": "Tiny structured logger (level, event, context, ts) and in-app banner; zero window.alert in src.",
+   "acceptance_criteria": [
+    "`git grep -n 'alert(' -- '*.tsx' ':!audit'` returns nothing"
+   ],
+   "verification_command": "! git grep -n \"[^a-zA-Z]alert(\" -- '*.tsx' '*.ts' ':!audit' ':!node_modules'",
+   "rollback": "git revert <commit of T-009>",
+   "effort_hours": 1.0,
+   "score_delta_estimate": {
+    "dimension": "D7",
+    "points": 5.4
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M2",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-010",
+   "title": "Replace misleading security badges with honest status",
+   "source_findings": [
+    "F-SEC-003"
+   ],
+   "lane": "SEC",
+   "dimension": "D3",
+   "priority": "P2",
+   "verification_mode": "check-first",
+   "depends_on": [
+    "T-003"
+   ],
+   "files_to_touch": [
+    "components/scenes/Gateway/DigitalIdCard.tsx",
+    "components/scenes/Gateway/GatewayScene.test.tsx"
+   ],
+   "change_spec": "Footer badges become 'Demo authentication \u2014 no server verification' and 'Local-only session'.",
+   "acceptance_criteria": [
+    "Gateway no longer renders 'E2EE Active' or 'Device Trust Verified'"
+   ],
+   "verification_command": "! git grep -n 'E2EE Active\\|Device Trust Verified' -- components",
+   "rollback": "git revert <commit of T-010>",
+   "effort_hours": 0.25,
+   "score_delta_estimate": {
+    "dimension": "D3",
+    "points": 5.4
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M2",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-011",
+   "title": "Remove duplicated legacy components and test libs from importmap",
+   "source_findings": [
+    "F-QUAL-001",
+    "F-QUAL-003",
+    "F-SEC-004"
+   ],
+   "lane": "QUAL",
+   "dimension": "D10",
+   "priority": "P2",
+   "verification_mode": "check-first",
+   "depends_on": [
+    "T-001"
+   ],
+   "files_to_touch": [
+    "components/Dashboard.tsx",
+    "components/Header.tsx",
+    "components/AnimatedLogo.tsx",
+    "components/TournamentBrowser.tsx",
+    "components/ScenarioEditor.tsx",
+    "components/icons/*",
+    "index.html"
+   ],
+   "change_spec": "Delete legacy duplicates that have shared-ui/scenes counterparts (not scene stubs, not Nexus/ScenarioEditor); strip testing libs from importmap.",
+   "acceptance_criteria": [
+    "orphan count drops from 18 to <= 11",
+    "build passes"
+   ],
+   "verification_command": "npm run build",
+   "rollback": "git revert <commit of T-011>",
+   "effort_hours": 1.0,
+   "score_delta_estimate": {
+    "dimension": "D10",
+    "points": 5.4
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M2",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-012",
+   "title": "Code-split Script Riter scene",
+   "source_findings": [
+    "F-RELY-003"
+   ],
+   "lane": "RELY",
+   "dimension": "D8",
+   "priority": "P2",
+   "verification_mode": "check-first",
+   "depends_on": [
+    "T-005"
+   ],
+   "files_to_touch": [
+    "App.tsx"
+   ],
+   "change_spec": "React.lazy + Suspense for ScriptRiterScene so data/communityRoles and genai load on demand.",
+   "acceptance_criteria": [
+    "main chunk < 500 kB; vite emits >=2 chunks"
+   ],
+   "verification_command": "npm run build 2>&1 | grep -c 'dist/assets/.*\\.js' | awk '{exit !($1>=2)}'",
+   "rollback": "git revert <commit of T-012>",
+   "effort_hours": 0.5,
+   "score_delta_estimate": {
+    "dimension": "D8",
+    "points": 6
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M2",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-013",
+   "title": "Add CI workflow, Dockerfile, .env.example, favicon",
+   "source_findings": [
+    "F-OPS-001",
+    "F-OPS-002"
+   ],
+   "lane": "OPS",
+   "dimension": "D6",
+   "priority": "P1",
+   "verification_mode": "check-first",
+   "depends_on": [
+    "T-001"
+   ],
+   "files_to_touch": [
+    ".github/workflows/ci.yml",
+    "Dockerfile",
+    ".dockerignore",
+    ".env.example",
+    "public/favicon.svg",
+    "index.html"
+   ],
+   "change_spec": "CI: node 22, npm ci --ignore-scripts, typecheck, test, build. Dockerfile: multi-stage node:22-alpine -> nginxinc/nginx-unprivileged:1.27-alpine (non-root, pinned). .env.example documents GEMINI_API_KEY.",
+   "acceptance_criteria": [
+    "files exist; CI yaml parses; build passes"
+   ],
+   "verification_command": "test -f .github/workflows/ci.yml && test -f Dockerfile && test -f .env.example && test -f public/favicon.svg && npm run build",
+   "rollback": "git revert <commit of T-013>",
+   "effort_hours": 2.0,
+   "score_delta_estimate": {
+    "dimension": "D6",
+    "points": 19.5
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M2",
+   "status": "DONE_PARTIAL",
+   "note": "Workflow authored and locally simulated (cmd#40-42) but staged at ci/github-workflow-ci.yml: GitHub rejected the push of .github/workflows/* (App token lacks `workflows` permission, cmd#49). Human: move the file (ci/README.md)."
+  },
+  {
+   "task_id": "T-014",
+   "title": "Rewrite README with scope, journeys, scripts, env, limitations",
+   "source_findings": [
+    "F-QUAL-004",
+    "F-SCOPE-001"
+   ],
+   "lane": "QUAL",
+   "dimension": "D11",
+   "priority": "P2",
+   "verification_mode": "check-first",
+   "depends_on": [
+    "T-013"
+   ],
+   "files_to_touch": [
+    "README.md"
+   ],
+   "change_spec": "Sections: What it is, Journeys J1-J5 + status, Quickstart (<30 min), Scripts, Env, Security notes (key-in-bundle, demo auth), Out of scope.",
+   "acceptance_criteria": [
+    "README mentions GEMINI_API_KEY, npm test, and each journey"
+   ],
+   "verification_command": "grep -q 'npm test' README.md && grep -q 'GEMINI_API_KEY' README.md && grep -q 'Script Riter' README.md",
+   "rollback": "git revert <commit of T-014>",
+   "effort_hours": 1.0,
+   "score_delta_estimate": {
+    "dimension": "D11",
+    "points": 23.4
+   },
+   "risk_of_regression": "low",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M2",
+   "status": "DONE"
+  },
+  {
+   "task_id": "T-015",
+   "title": "Move Gemini behind a server-side proxy",
+   "source_findings": [
+    "F-SEC-001"
+   ],
+   "lane": "SEC",
+   "dimension": "D3",
+   "priority": "P1",
+   "verification_mode": "check-first",
+   "depends_on": [
+    "T-002"
+   ],
+   "files_to_touch": [
+    "(new) api/ or serverless function",
+    "services/geminiService.ts"
+   ],
+   "change_spec": "Requires hosting decision.",
+   "acceptance_criteria": [
+    "No apiKey string in client bundle"
+   ],
+   "verification_command": "! grep -q apiKey dist/assets/*.js",
+   "rollback": "git revert <commit of T-015>",
+   "effort_hours": 6.0,
+   "score_delta_estimate": {
+    "dimension": "D3",
+    "points": 16.2
+   },
+   "risk_of_regression": "medium",
+   "requires_human": true,
+   "human_reason": "Backend/hosting decision + server-side secret provisioning",
+   "milestone": "M3",
+   "status": "BLOCKED_HUMAN"
+  },
+  {
+   "task_id": "T-016",
+   "title": "Integrate a real identity provider",
+   "source_findings": [
+    "F-SEC-002"
+   ],
+   "lane": "SEC",
+   "dimension": "D3",
+   "priority": "P1",
+   "verification_mode": "test-first",
+   "depends_on": [
+    "T-003"
+   ],
+   "files_to_touch": [
+    "services/authService.ts"
+   ],
+   "change_spec": "Replace stub with OIDC/magic-link provider.",
+   "acceptance_criteria": [
+    "Invalid credentials rejected by server"
+   ],
+   "verification_command": "npm test -- --run",
+   "rollback": "git revert <commit of T-016>",
+   "effort_hours": 8.0,
+   "score_delta_estimate": {
+    "dimension": "D3",
+    "points": 16.2
+   },
+   "risk_of_regression": "medium",
+   "requires_human": true,
+   "human_reason": "IdP selection is a product/business decision",
+   "milestone": "M3",
+   "status": "BLOCKED_HUMAN"
+  },
+  {
+   "task_id": "T-017",
+   "title": "Choose and add LICENSE",
+   "source_findings": [
+    "F-LEGAL-001"
+   ],
+   "lane": "LEGAL",
+   "dimension": "D12",
+   "priority": "P2",
+   "verification_mode": "check-first",
+   "depends_on": [],
+   "files_to_touch": [
+    "LICENSE"
+   ],
+   "change_spec": "Owner picks licence.",
+   "acceptance_criteria": [
+    "LICENSE exists"
+   ],
+   "verification_command": "test -f LICENSE",
+   "rollback": "git revert <commit of T-017>",
+   "effort_hours": 0.25,
+   "score_delta_estimate": {
+    "dimension": "D12",
+    "points": 6
+   },
+   "risk_of_regression": "low",
+   "requires_human": true,
+   "human_reason": "Legal decision",
+   "milestone": "M3",
+   "status": "BLOCKED_HUMAN"
+  },
+  {
+   "task_id": "T-018",
+   "title": "Split ScriptRiterScene into modules",
+   "source_findings": [
+    "F-QUAL-002"
+   ],
+   "lane": "QUAL",
+   "dimension": "D10",
+   "priority": "P2",
+   "verification_mode": "check-first",
+   "depends_on": [
+    "T-005",
+    "T-009"
+   ],
+   "files_to_touch": [
+    "components/scenes/ScriptRiter/*"
+   ],
+   "change_spec": "Extract RoleLibrary, Inspector, AIGenModal.",
+   "acceptance_criteria": [
+    "no file > 600 LOC in components/scenes/ScriptRiter"
+   ],
+   "verification_command": "! find components/scenes/ScriptRiter -name '*.tsx' | xargs wc -l | awk '$1>600 && $2!=\"total\"' | grep -q .",
+   "rollback": "git revert <commit of T-018>",
+   "effort_hours": 4.0,
+   "score_delta_estimate": {
+    "dimension": "D10",
+    "points": 5.4
+   },
+   "risk_of_regression": "high",
+   "requires_human": false,
+   "human_reason": null,
+   "milestone": "M4",
+   "status": "BACKLOG"
+  }
+ ]
+}

@@ -1,7 +1,11 @@
 import React, { useState, useCallback, useRef, useEffect, ChangeEvent, useMemo } from 'react';
 import { Role, NexusNode, Connection, Team, GeneratedRoleIdea } from '../../../types';
 import { communityRoles } from '../../../data/communityRoles';
-import { generateScenarioIdeas, parseRolesFromFileContent } from '../../../services/geminiService';
+import { generateScenarioIdeas, parseRolesFromFileContent, isAiConfigured } from '../../../services/geminiService';
+import { newId, toRole, validateImportFile } from '../../../services/roleNormalizer';
+import { saveScenario, loadLastOpened, exportScenarioJson } from '../../../services/scenarioStorage';
+import { logger } from '../../../services/logger';
+import NotificationBanner, { Notification } from '../../shared-ui/banners/NotificationBanner';
 import PlusIcon from '../../shared-ui/icons/PlusIcon';
 import TrashIcon from '../../shared-ui/icons/TrashIcon';
 import WandIcon from '../../shared-ui/icons/WandIcon';
@@ -18,10 +22,15 @@ import CopyIcon from '../../shared-ui/icons/CopyIcon';
 
 
 const ScriptRiterScene: React.FC = () => {
-    const [nodes, setNodes] = useState<NexusNode[]>([]);
-    const [connections, setConnections] = useState<Connection[]>([]);
-    const [scenarioName, setScenarioName] = useState('New Scenario');
-    const [scenarioDescription, setScenarioDescription] = useState('');
+    // Restore the last saved scenario (if any) synchronously on first render.
+    const [restored] = useState(() => loadLastOpened());
+    const [scenarioId, setScenarioId] = useState<string>(() => restored?.id ?? newId('scenario'));
+    const [nodes, setNodes] = useState<NexusNode[]>(() => restored?.nodes ?? []);
+    const [connections, setConnections] = useState<Connection[]>(() => restored?.connections ?? []);
+    const [scenarioName, setScenarioName] = useState(() => restored?.name ?? 'New Scenario');
+    const [scenarioDescription, setScenarioDescription] = useState(() => restored?.description ?? '');
+    const [notice, setNotice] = useState<Notification | null>(null);
+    const dismissNotice = useCallback(() => setNotice(null), []);
 
     const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
     const [selectedConnectionId, setSelectedConnectionId] = useState<string | null>(null);
@@ -37,7 +46,7 @@ const ScriptRiterScene: React.FC = () => {
     const addRoleToScenario = (role: Role) => {
         const newNode: NexusNode = {
             ...role,
-            id: `node-${role.id}-${Date.now()}`,
+            id: newId(`node-${role.id}`),
             x: Math.random() * 500 + 100,
             y: Math.random() * 300 + 100,
         };
@@ -47,7 +56,7 @@ const ScriptRiterScene: React.FC = () => {
     const handleNodeClick = (nodeId: string) => {
         if (connectingNodeId && connectingNodeId !== nodeId) {
             const newConnection: Connection = {
-                id: `conn-${connectingNodeId}-${nodeId}-${Date.now()}`,
+                id: newId('conn'),
                 from: connectingNodeId,
                 to: nodeId,
                 type: 'neutral',
@@ -147,6 +156,34 @@ const ScriptRiterScene: React.FC = () => {
     }, [draggingNodeId]);
 
 
+    const handleSave = () => {
+        try {
+            const saved = saveScenario({ id: scenarioId, name: scenarioName, description: scenarioDescription, nodes, connections });
+            setNotice({ type: 'success', message: `Scenario "${saved.name}" saved locally (${saved.nodes.length} roles, ${saved.connections.length} links).` });
+        } catch (error) {
+            logger.error('scenario.save_failed', error, { id: scenarioId });
+            setNotice({ type: 'error', message: `Could not save scenario: ${error instanceof Error ? error.message : 'unknown error'}` });
+        }
+    };
+
+    const handleNew = () => {
+        setScenarioId(newId('scenario'));
+        setNodes([]); setConnections([]); setScenarioName('New Scenario'); setScenarioDescription('');
+        setSelectedNodeId(null); setSelectedConnectionId(null);
+        setNotice({ type: 'info', message: 'Started a new scenario. Unsaved changes to the previous one were discarded.' });
+    };
+
+    const handleExport = () => {
+        const json = exportScenarioJson({ id: scenarioId, name: scenarioName, description: scenarioDescription, nodes, connections });
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${scenarioName.replace(/[^a-z0-9-_]+/gi, '_') || 'scenario'}.gsdf.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
     const handleImportClick = () => {
         fileInputRef.current?.click();
     };
@@ -155,23 +192,21 @@ const ScriptRiterScene: React.FC = () => {
         const file = event.target.files?.[0];
         if (!file) return;
 
+        const rejection = validateImportFile(file);
+        if (rejection) {
+            setNotice({ type: 'error', message: `Error importing roles: ${rejection}` });
+            if (event.target) event.target.value = '';
+            return;
+        }
+
         const content = await file.text();
         try {
             const parsedRoles = await parseRolesFromFileContent(content);
-            parsedRoles.forEach(role => {
-                 const newRole: Role = {
-                    ...role,
-                    id: `imported-${role.name.replace(/\s+/g, '-')}-${Date.now()}`,
-                    team: role.team as Team, // Assuming validation happens or types match
-                    abilities: [],
-                    isCustom: true,
-                };
-                addRoleToScenario(newRole);
-            });
-            alert(`${parsedRoles.length} roles imported successfully!`);
+            parsedRoles.forEach(role => addRoleToScenario(toRole(role, 'imported')));
+            setNotice({ type: 'success', message: `${parsedRoles.length} roles imported successfully.` });
         } catch (error) {
-            console.error("Failed to parse roles from file:", error);
-            alert(`Error importing roles: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            logger.error('roles.import_failed', error, { fileName: file.name, size: file.size });
+            setNotice({ type: 'error', message: `Error importing roles: ${error instanceof Error ? error.message : 'Unknown error'}` });
         }
         // Reset file input
         if(event.target) event.target.value = '';
@@ -224,7 +259,7 @@ const ScriptRiterScene: React.FC = () => {
                         <h1 className="text-xl font-orbitron font-bold text-white">{scenarioName}</h1>
                     </div>
                     <div className="flex items-center gap-2">
-                         <button className="flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md bg-gray-700 hover:bg-gray-600 terminal-button" onClick={() => { setNodes([]); setConnections([]); setScenarioName('New Scenario'); }}>
+                         <button className="flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md bg-gray-700 hover:bg-gray-600 terminal-button" onClick={handleNew} aria-label="New scenario">
                             <NewScenarioIcon className="w-4 h-4" /> New
                         </button>
                         <button className="flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md bg-gray-700 hover:bg-gray-600 terminal-button" onClick={handleImportClick}>
@@ -233,11 +268,20 @@ const ScriptRiterScene: React.FC = () => {
                         <button className="flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md bg-[#00FF88]/80 text-black hover:bg-[#00FF88] terminal-button" onClick={() => setAIGenModalOpen(true)}>
                             <WandIcon className="w-4 h-4" /> Generate with AI
                         </button>
-                        <button className="flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md bg-blue-500 hover:bg-blue-400 terminal-button">
+                        <button className="flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md bg-gray-700 hover:bg-gray-600 terminal-button" onClick={handleExport} aria-label="Export scenario as JSON">
+                            <CopyIcon className="w-4 h-4" /> Export
+                        </button>
+                        <button className="flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md bg-blue-500 hover:bg-blue-400 terminal-button" onClick={handleSave} aria-label="Save scenario">
                             <SaveIcon className="w-4 h-4" /> Save
                         </button>
                     </div>
                 </header>
+
+                {notice && (
+                    <div className="px-2 pt-2">
+                        <NotificationBanner {...notice} onDismiss={dismissNotice} />
+                    </div>
+                )}
 
                 {/* Canvas */}
                 <main className="flex-1 relative script-riter-bg" onDoubleClick={() => { setSelectedNodeId(null); setSelectedConnectionId(null); }}>
@@ -323,6 +367,7 @@ const ScriptRiterScene: React.FC = () => {
                         {nodes.map(node => (
                             <g 
                                 key={node.id} 
+                                data-testid="nexus-node"
                                 transform={`translate(${node.x}, ${node.y})`} 
                                 onMouseDown={(e) => handleMouseDown(e, node.id)}
                                 onClick={() => handleNodeClick(node.id)}
@@ -360,16 +405,7 @@ const ScriptRiterScene: React.FC = () => {
                 <AIGenerationModal 
                     onClose={() => setAIGenModalOpen(false)}
                     onAddRoles={(roles) => {
-                         roles.forEach(role => {
-                            const newRole: Role = {
-                                ...role,
-                                id: `ai-${role.name.replace(/\s+/g, '-')}-${Date.now()}`,
-                                team: role.team as Team,
-                                abilities: [],
-                                isCustom: true,
-                            };
-                            addRoleToScenario(newRole);
-                        });
+                        roles.forEach(role => addRoleToScenario(toRole(role, 'ai')));
                     }}
                     existingRoles={nodes}
                 />
@@ -450,7 +486,7 @@ const RoleLibraryPanel: React.FC<{isOpen: boolean, addRoleToScenario: (role: Rol
                                                 <p className="font-semibold">{role.name}</p>
                                                 <p className="text-xs text-gray-400">{role.category}</p>
                                             </div>
-                                            <button onClick={() => addRoleToScenario(role)} className="p-1.5 bg-gray-600 rounded-full hover:bg-secondary terminal-button">
+                                            <button onClick={() => addRoleToScenario(role)} aria-label={`Add ${role.name} to scenario`} className="p-1.5 bg-gray-600 rounded-full hover:bg-secondary terminal-button">
                                                 <PlusIcon className="w-4 h-4" />
                                             </button>
                                         </div>
@@ -666,10 +702,12 @@ const AIGenerationModal: React.FC<{
     const [mechanics, setMechanics] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [generatedResponse, setGeneratedResponse] = useState<{ roles: GeneratedRoleIdea[], mechanic: string} | null>(null);
+    const [genError, setGenError] = useState<string | null>(null);
 
     const handleGenerate = async () => {
         setIsLoading(true);
         setGeneratedResponse(null);
+        setGenError(null);
         try {
             const response = await generateScenarioIdeas(existingRoles, theme, playerCount, mechanics);
             if(response) {
@@ -678,11 +716,13 @@ const AIGenerationModal: React.FC<{
                     mechanic: response.mechanic_suggestion
                 });
             } else {
-                alert('AI generation failed. Please try again.');
+                setGenError(isAiConfigured()
+                    ? 'AI generation failed. Please try again.'
+                    : 'AI features are unavailable: this build has no Gemini key configured.');
             }
         } catch (error) {
-            console.error(error);
-            alert('An error occurred during AI generation.');
+            logger.error('ai.generate_failed', error);
+            setGenError('An error occurred during AI generation.');
         } finally {
             setIsLoading(false);
         }
@@ -696,6 +736,7 @@ const AIGenerationModal: React.FC<{
                      <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-700 terminal-button">&times;</button>
                 </header>
                 <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                    {genError && <NotificationBanner type="error" message={genError} onDismiss={() => setGenError(null)} />}
                     {!generatedResponse ? (
                     <>
                         <div>

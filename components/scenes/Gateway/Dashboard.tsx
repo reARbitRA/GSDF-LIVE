@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import NotificationBanner from '../../shared-ui/banners/NotificationBanner';
 import { Page } from '../../../App';
 
 interface DashboardProps {
@@ -114,8 +115,10 @@ const GameStatsChart: React.FC = () => (
 
 
 const Dashboard: React.FC<DashboardProps> = ({ setPage }) => {
+  const [notice, setNotice] = useState<string | null>(null);
   return (
     <div className="space-y-8">
+      {notice && <NotificationBanner type="info" message={notice} onDismiss={() => setNotice(null)} />}
       <div className="text-center">
         <h1 
             className="text-4xl md:text-5xl font-orbitron font-black tracking-wider uppercase title-glow"
@@ -150,7 +153,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setPage }) => {
         <ActionCard
           title="Quick Play"
           description="Jump into a classic Mafia game. Find a public lobby and start playing immediately."
-          onClick={() => alert('Quick Play coming soon!')}
+          onClick={() => setNotice('Quick Play is not available yet.')}
           buttonText="Find Investigation"
         />
       </div>
